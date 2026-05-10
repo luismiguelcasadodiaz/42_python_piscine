@@ -67,3 +67,5 @@ Common format specifiers (same logic as C `printf`):
 | `:d` | Integer |
 | `:>10` | Right-align in field of width 10 |
 | `:<10` | Left-align in field of width 10 |
+
+[return](../../README.md)

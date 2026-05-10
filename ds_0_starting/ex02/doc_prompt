@@ -1,0 +1,21 @@
+
+exercise ex02 relates to type introspections
+
+also you learn to create a function in a module an import it. a Kind of C include.
+
+this exercise is tricky. it allows no function, so forces it to query the object
+itself to reveal the class name it belongs to:
+
+obj.__class__.__name__
+
+you have to use your first if elif else
+
+It is an oportunity to practice again with f-string
+
+Code becomes very simple when you combien operator IN wiht a predefined list.
+
+Good to use str class method Capitalize.
+
+You will face tabs for first time. Tabs as code indentation, as block
+definitio.n
+

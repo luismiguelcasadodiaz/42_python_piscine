@@ -1,0 +1,31 @@
+In this exercise we learnt about escalar/primitive types and their "null-like" equivalents in Python
+
+We lean about None, Zero, empty_string: False, and NaN. Ther are more NULL valeus than in c.
+
+
+it is remarkeble the learning about nan values.
+
+It's a deliberate design decision from the IEEE 754 standard, which defines how
+floating-point numbers work in virtually every programming language, not just Python.
+
+The reasoning is: nan represents "the result of an undefined or nonsensical calculation."
+
+For example:
+pythonprint(float("inf") - float("inf"))   # nan
+print(0 * float("inf"))              # nan
+
+These two nan values came from completely different operations. 
+They don't represent the same number — they represent "this is not a valid number." 
+
+So comparing them as equal would be misleading.
+
+Think of it like this: 
+if I say "I got an error" and 
+you say "I got an error," that doesn't mean we got the same error. 
+
+So error == error should be False.
+so error != error sholud be true.
+That's why the standard defines that nan is not equal to anything, including itself. 
+Every language follows this: Python, C, Java, JavaScript, Rust — all behave the same way.
+
+Be aware that False and zero are the same

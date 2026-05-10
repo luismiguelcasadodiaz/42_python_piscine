@@ -41,3 +41,7 @@ ft_dict["Hello"] = "42 Barcelona"  # OK
 | tuple | no      | no              | yes     |
 | set   | yes     | no              | no (hash-based) |
 | dict  | yes     | by key          | yes (insertion order, Python 3.7+) |
+
+
+
+[return](../../README.md)
