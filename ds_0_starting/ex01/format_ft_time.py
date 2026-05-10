@@ -1,5 +1,8 @@
 import time
-data = [x for x in dir(time) if not x.startswith('_')]
+now = time.time()
 
-for e in data:
-    print(e.__doc__)
+
+
+
+print(f"Seconds since January 1, 1970: {now:,.4f} or {now:.2e} in scientific notation")
+print(time.strftime("%b %d %Y",time.localtime()))

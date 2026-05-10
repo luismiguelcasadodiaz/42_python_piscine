@@ -1,0 +1,63 @@
+This exercise teaches about:
+modules, importation and usage.
+time module
+f-strings and format codes.
+
+You can learn about what is availabel inside the module reading doc strings
+with this code:
+
+import time
+data = [x for x in dir(time) if not x.startswith('_')]
+for e in data:
+    func = getattr(time, e)
+    doc = getattr(func, '__doc__', 'No Docstring')
+    print(f'---------------------------{e}-----------------------------------')
+    print(doc)
+    print() 
+
+There is an online web that documents modules in the standard library.
+
+https://docs.python.org/3/library/index.html
+https://docs.python.org/3/library/time.html
+
+The standard library is the collection of modules that comes pre-installed with
+Python — no pip install needed. 
+
+There are around 200+ modules included.
+Some of the most common ones, grouped by purpose:
+Data & math — math, decimal, fractions, random, statistics, collections, itertools, functools
+Text & strings — string, re (regex), textwrap, unicodedata
+Files & OS — os, sys, pathlib, shutil, glob, tempfile
+Date & time — time, datetime, calendar
+I/O & formats — json, csv, xml, html, sqlite3, zipfile, gzip
+Networking — http, urllib, socket, email, smtplib
+Dev tools — logging, unittest, pdb, argparse, typing, inspect
+
+Beyond the standard library, there are third-party libraries that you install 
+with pip. 
+
+These are what make Python's ecosystem so powerful:
+Data science — numpy, pandas, matplotlib, scipy
+Web development — django, flask, fastapi
+Machine learning — scikit-learn, tensorflow, pytorch
+Automation & scraping — requests, beautifulsoup4, selenium
+Image processing — pillow, opencv-python
+
+All of these live on PyPI (Python Package Index, at pypi.org), which hosts overi
+500,000 packages. 
+When you run pip install pandas, pip downloads it from there.
+
+The key distinction: 
+standard library is "batteries included" with Python, 
+third-party libraries are community-built tools you add as needed.
+
+
+An f-string is a string literal prefixed with f that lets you embed Python 
+expressions directly inside curly braces {}, which get evaluated at runtime:
+
+f"Seconds since Jan 1, 1970: {now:,.4f} or {now:.2e} in scientific notation")
+
+Documentation about format codes can be found at 
+https://docs.python.org/3/library/string.html#format-specification-mini-language
+
+If you know C printf, you will feel confortable.
