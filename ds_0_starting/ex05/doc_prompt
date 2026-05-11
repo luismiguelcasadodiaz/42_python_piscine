@@ -1,0 +1,10 @@
+What we learn in this exercise is
+
++ String iteration and character classification wiht string class methods
++ prompt user for data with input() versys sys.stdin.readline()
++ To create a standalone programm with the if __name__ == "__main__" guard
++ To add doc strings to our functions according to pep 257
++ pip install the first modulo from PyPI
++ distinguish functions that return something from procedures that return nothing
+
+there is a kind of norminette called flake 8 that enforces our code to fullfill PEP8 norm
