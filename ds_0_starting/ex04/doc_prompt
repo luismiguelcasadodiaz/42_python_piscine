@@ -1,0 +1,17 @@
+CLI input handling, defensive validation with assert, exceptions,  are the learning for this exercise.
+
+we start using sys module of the standrar library
+
+
+sys.exit(estatus code) exits form main program.
+sys.tracebacklimi0=0 reduces error verbosity
+del sys.tracebacklimit restores full verdosity
+
+del removes a reference forn namespace.
+
+THe approach called EAFP (Easier to Ask Forgiveness than Permission) is the 
+preferred Python style.
+
+you protect your code in a try/except. then try. is error treat it.
+You will discover that there are differente general pourpouse exception types.
+you will learn abour exception chaining
