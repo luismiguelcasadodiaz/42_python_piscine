@@ -1,0 +1,13 @@
+we learn about
++ reuse functions from other folders with sys.path.append
++ treat escape sequences from CLI
++ iterator
++ list comprenhensions
++ lambda function
++ filter function
++ str class's split and join methods
++ # noqa: E402 tells flake8 to ignore that specific error on those lines 
+Two things to note: 
++ filter() returns an iterator (not a list), so you wrap it with list() to see the results. 
++ And passing None as the function filters out all falsy values ("", 0, None, False, []).
+

@@ -11,3 +11,4 @@ Introductory Python curse
 | NULL_not_found.py | Scalar/null-like types: None, NaN, 0, "", False — IEEE 754 NaN behavior | [FINDINGS.md](ds_0_starting/ex03/FINDINGS.md) |
 | whatis.py | CLI args with `sys.argv`, `assert`, EAFP try/except, exception chaining, modulo | [FINDINGS.md](ds_0_starting/ex04/FINDINGS.md) |
 | building.py | String classification methods, `sys.stdin.read()`, `__main__` guard, docstrings, flake8 | [FINDINGS.md](ds_0_starting/ex05/FINDINGS.md) |
+| ft_filter.py, filterstring.py | Iterators, list comprehensions, lambda, `filter()`, `split()`/`join()`, reimplementing built-ins | [FINDINGS.md](ds_0_starting/ex06/FINDINGS.md) |
