@@ -12,3 +12,5 @@ Introductory Python curse
 | whatis.py | CLI args with `sys.argv`, `assert`, EAFP try/except, exception chaining, modulo | [FINDINGS.md](ds_0_starting/ex04/FINDINGS.md) |
 | building.py | String classification methods, `sys.stdin.read()`, `__main__` guard, docstrings, flake8 | [FINDINGS.md](ds_0_starting/ex05/FINDINGS.md) |
 | ft_filter.py, filterstring.py | Iterators, list comprehensions, lambda, `filter()`, `split()`/`join()`, reimplementing built-ins | [FINDINGS.md](ds_0_starting/ex06/FINDINGS.md) |
+| sos.py | Dictionary as O(1) lookup table, `all()`, generator expressions, `print(end=)`, input normalisation | [FINDINGS.md](ds_0_starting/ex07/FINDINGS.md) |
+| Loading.py | `yield`/generators, `enumerate()`, `\r` terminal control, `flush=True`, time estimation, dynamic f-strings | [FINDINGS.md](ds_0_starting/ex08/FINDINGS.md) |

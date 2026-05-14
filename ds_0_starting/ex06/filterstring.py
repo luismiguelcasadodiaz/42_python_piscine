@@ -5,10 +5,12 @@ from ft_filter import ft_filter      # noqa: E402
 
 
 def goodchar(c) -> bool:
+    """Returns True if c is neither a punctuation mark nor unprintable."""
     return not (is_punctuation(c) or not c.isprintable())
 
 
 def main():
+    """Filter words from a string by minimum length, removing punctuation."""
     assert len(sys.argv) == 3 and sys.argv[2].isdigit(), \
         "the arguments are bad"
     cleanstring = "".join(
