@@ -14,3 +14,4 @@ Introductory Python curse
 | ft_filter.py, filterstring.py | Iterators, list comprehensions, lambda, `filter()`, `split()`/`join()`, reimplementing built-ins | [FINDINGS.md](ds_0_starting/ex06/FINDINGS.md) |
 | sos.py | Dictionary as O(1) lookup table, `all()`, generator expressions, `print(end=)`, input normalisation | [FINDINGS.md](ds_0_starting/ex07/FINDINGS.md) |
 | Loading.py | `yield`/generators, `enumerate()`, `\r` terminal control, `flush=True`, time estimation, dynamic f-strings | [FINDINGS.md](ds_0_starting/ex08/FINDINGS.md) |
+| ft_package/ | Package structure, `__init__.py`, `pyproject.toml`, build/install/publish workflow, relative imports | [FINDINGS.md](ds_0_starting/ex09/FINDINGS.md) |

@@ -128,6 +128,27 @@ This is the 42 "recode before you use" pattern taken further — not just
 reimplementing, but **measuring your implementation against the original**
 to understand the gap and the cost of real-world optimisation.
 
+## range type hint
+range is its own type — not a list, not a tuple, it's a lazy sequence.
 
+```python
+def ft_tqdm(lst: range) -> None:
+    for current, e in enumerate(lst):
+        yield e          # pauses here, hands e to the for loop, resumes on next iteration
+        # code after yield runs before the next yield
+```
+
+So when you see lst: range, the type hint is saying "this function expects a range object." Though in practice it would work with any iterable — the hint is just documentation, Python doesn't enforce it at runtime.
+
+If you want memory efficiency with arbitrary data, use a generator instead:
+
+```python
+# List — all in memory
+data = [x * 2 for x in range(1000000)]
+
+# Generator — lazy, almost no memory
+data = (x * 2 for x in range(1000000))
+```
+The parentheses () instead of brackets [] make it a generator. Same idea as range — values are produced on demand, not stored.
 
 [return](../../README.md)

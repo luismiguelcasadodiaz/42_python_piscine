@@ -1,0 +1,54 @@
+This exercise teach to create packages:
+
+A package is a folder with a file named __init__.py to define which module to export.
+Each file *.py inside the folder  is a module
+
+```python
+# __init__.py 
+from .count_in_list import count_in_list
+from .fraction_of_list import fraction_of_list
+
+``
+
+a pyproject.toml file is required by tools such as pip, build or a setuptools 
+to made the package installable.
+
+The guide to construct the pyproject.toml is in 
+https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
+
+barebone sections are:
+
+
+"pip install ." builds and installs
+"python -m build" builds two files in a "dist/" folder
+
+Run this commands from pyproject.toml's folder
+
+
+dist/
+    my_package-0.0.1.tar.gz        # source distribution (sdist)
+    my_package-0.0.1-py3-none-any.whl  # wheel (built distribution)
+
+For development, use editable mode:
+pip install -e .
+The -e flag means any changes you make to your source code take effect immediately without reinstalling. Very useful while developing.
+
+"python -m build" builds two files in a "dist/" folder
+
+Run this commands from pyproject.toml's folder
+
+
+dist/
+    my_package-0.0.1.tar.gz        # source distribution (sdist)
+    my_package-0.0.1-py3-none-any.whl  # wheel (built distribution)
+
+
+pip install .dist/my_package-0.0.1-py3-none-any.whl
+
+installs it in the venv. pip list will show it
+
+There's also TestPyPI (test.pypi.org) for testing uploads before publishing for real:
+twine upload --repository testpypi dist/*
+
+then any boy can install from there
+pip install --index-url https://test.pypi.org/simple/ your_package_name

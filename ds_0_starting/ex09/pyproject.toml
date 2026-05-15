@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "ft_package"
+version = "0.0.1"
+description = "A short description"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    {name = "Luis Casado", email = "luis@example.com"}
+]
+dependencies = [
+    "requests>=2.25",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/luismiguelcasadodiaz/42_python_piscine/tree/main/ds_0_starting/ex09"
+Repository = "https://github.com/luismiguelcasadodiaz/42_python_piscine/tree/main/ds_0_starting/ex09"
