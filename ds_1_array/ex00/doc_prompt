@@ -1,0 +1,82 @@
+we learnt to protect the function wiht isinstance instead of type, as type is mucho more restrictive and is instance checks classes and subclasses.
+
+The subclass pitfall you encountered in your give_bmi function is a classic trap in Python. It happens when you use strict type checking (type(x) == T) instead of checking for inheritance (isinstance(x, T)).
+
+In Python, checking type(e) == int or type(e) == float is like saying: "This object must be exactly a standard Python integer or float, and absolutely nothing else."
+
+While that sounds safe, it actively breaks two major features of Python: Booleans as Integers and Third-Party Numeric Ecosystems (like NumPy itself!).
+
+we learnt that is faster convert list to numpy array and verify all constrains with numpy.
+
+np.array(obj) transforms a list into an ndarray with all elements sharing the same type.
+
+If you pass a list like [1, 2.5, "hello"], NumPy will notice the string and convert every single element into a string to keep the array uniform. Your array becomes ['1', '2.5', 'hello'].
+
+
+we learnt about The NumPy Type Hierarchy
+
+NumPy doesn't treat data types as flat, isolated categories. It organizes them into a family tree (a hierarchy of classes).
+
+At the top of the tree is np.generic. Branches split into np.number, which further splits into np.integer and np.inexact. Underneath those branches sit the actual concrete types you use daily (like np.int32, np.int64, np.float64).
+
+Because of this hierarchy, np.int64 is a "child" (or subtype) of np.integer, which is a child of np.number.
+
+We learnt about np.issubdtype
+it is a powerful function in NumPy used to check if a specific data type (dtype) belongs to a broader family of data types (a supertype).
+
+Instead of asking "Is this array exactly a 64-bit float?", np.issubdtype allows you to ask: "Is this array any kind of floating-point number?" or "Is it any kind of integer?"
+
+so we discover np.number a supertype
+
+np.all() is a functio to test all elements of an array.
+
+Aside of check division by zero i checked division by smallest positive number. numpy has finfo() or floating point machine limits. It returns
+
+```python
+print(numpy.finfo(numpy.float32))
+Machine parameters for float32
+---------------------------------------------------------------
+precision = 6   resolution = 1e-06
+machep = -23   eps =        1.1920929e-07
+negep =  -24   epsneg =     5.9604645e-08
+minexp = -126   tiny =       1.1754944e-38
+maxexp = 128   max =        3.4028235e+38
+nexp =   8   min =        -max
+smallest_normal = 1.1754944e-38   smallest_subnormal = 1e-45
+```
+
+
+
+
+I learn to create extensive test for my function with pytest module plus an 
+adhoc file wiht tests that is executed as
+pytest -v ./my_tests.py
+
+There are tests for what goes ok and there are tests to deal with wrong cases.
+
+```python
+def test_give_bmi_integers():
+    """Test standard BMI calculation with integer inputs."""
+    # Metric formula: weight (kg) / height (m)^2
+    # Height 2m, Weight 80kg -> 80 / 4 = 20.0
+    heights = [2, 2]
+    weights = [80, 100]
+
+    expected = [20.0, 25.0]
+    result = give_bmi(heights, weights)
+
+    # Using np.allclose because floating-point math can have tiny rounding variances
+    assert np.allclose(result, expected)
+
+def test_give_bmi_mismatched_lengths():
+    """Test that mismatched list lengths trigger an AssertionError."""
+    heights = [1.80, 1.75]
+    weights = [80]  # Missing one weight
+    
+    with pytest.raises(AssertionError) as exc_info:
+        give_bmi(heights, weights)
+    
+    assert "Lists's lengths must be equal" in str(exc_info.value)	
+```
+
+
