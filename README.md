@@ -79,3 +79,4 @@ The overall aim in one sentence:
 | File | Description | Findings |
 |------|-------------|----------|
 | give_bmi.py | NumPy arrays, dtype hierarchy, `np.issubdtype()`, `np.all()`, `np.finfo()`, `isinstance`, pytest | [FINDINGS.md](ds_1_array/ex00/FINDINGS.md) |
+| array2D.py | 2D arrays, `.shape`, row-wise slicing, negative indices, slice clamping, bool guard, `.tolist()` | [FINDINGS.md](ds_1_array/ex01/FINDINGS.md) |

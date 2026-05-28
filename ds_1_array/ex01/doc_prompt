@@ -1,0 +1,17 @@
+There is a difference between Indexing and slicing
+
+WHile indexing raises IndexError if the index value is out of range, Slicing never raises exception but returns nothing
+
+Slicing never raises an exception — it just returns less data or an empty array:
+pythona2D[0:0]      # [] — empty, no error
+a2D[0:100]    # all 5 rows, no error
+a2D[50:100]   # [] — empty, no error
+
+Direct indexing does raise IndexError when out of range:
+
+pythona2D[4]     # ✅ [4, 4] — last row
+a2D[5]     # ❌ IndexError: index 5 is out of bounds for axis 0 with size 5
+a2D[-1]    # ✅ [4, 4] — last row
+a2D[-6]    # ❌ IndexError
+
+Same behavior as regular Python lists — the difference is always slicing vs indexing.
