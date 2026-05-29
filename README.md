@@ -80,3 +80,4 @@ The overall aim in one sentence:
 |------|-------------|----------|
 | give_bmi.py | NumPy arrays, dtype hierarchy, `np.issubdtype()`, `np.all()`, `np.finfo()`, `isinstance`, pytest | [FINDINGS.md](ds_1_array/ex00/FINDINGS.md) |
 | array2D.py | 2D arrays, `.shape`, row-wise slicing, negative indices, slice clamping, bool guard, `.tolist()` | [FINDINGS.md](ds_1_array/ex01/FINDINGS.md) |
+| load_image.py | Images as 3D `uint8` arrays, PIL/Pillow, `with` context, `os.path.abspath()`, `np.asarray()` | [FINDINGS.md](ds_1_array/ex02/FINDINGS.md) |
