@@ -84,3 +84,39 @@ The overall aim in one sentence:
 | zoom.py | crop/resize/zoom distinction, multi-axis slicing, PIL vs NumPy coord order, `convert("L")`, `np.newaxis`, matplotlib `cmap='gray'` trap, PIL canvas with custom axes | [FINDINGS.md](ds_1_array/ex03/FINDINGS.md) |
 | rotate.py | 90° CCW rotation index remapping, shape swap on rotation, `np.zeros` float64 trap, `arr[y,x]` vs `arr[y][x]` | [FINDINGS.md](ds_1_array/ex04/FINDINGS.md) |
 | pimp_image.py | `.copy()` vs assignment, channel isolation `arr[:,:,n]`, inversion broadcast, luminance dot product, `astype()`, `plt.subplots`, `axes.flat`, `cmap='gray'` | [FINDINGS.md](ds_1_array/ex05/FINDINGS.md) |
+
+## tables
+This module aims to teach me :
+Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots + log scale +
+  DataFrame merging + correlation intuition.
+
++   Data structure — wide format                                                                                       
+  The Gapminder CSVs are in wide format: rows = countries, columns = years. This is the opposite of the "tidy" long  
+  format pandas prefers for plotting. Every exercise forces you to deal with this — selecting a row by country name, 
+  then transposing .T to get years on the x-axis.                                                                    
+                  
++ ex00 — CSV loading and error handling
+  pd.read_csv(), .shape to print dimensions, and returning None gracefully for bad paths or bad formats. First
+  contact with the DataFrame object.
+
++ ex01 — Row selection and line plot
+  Filtering a single country row from a wide DataFrame, transposing it to a Series with year as index, then plotting.
+   Teaches plt.title(), plt.xlabel(), plt.ylabel().
+
++ ex02 — Multi-series plot and legend
+  Overlaying two countries on the same axes — teaches that each .plot() or plt.plot() call adds a new series to the
+  current figure, and that plt.legend() is needed to distinguish them.
+
++ ex03 — Joining two DataFrames + scatter plot + log scale
+  This is the richest exercise. Three distinct new concepts:
+  - Merging two DataFrames (GDP and life expectancy) on the country column for a specific year
+  - Scatter plot (plt.scatter()) instead of a line chart
+  - Log scale on x-axis — plt.xscale('log') — because GDP spans orders of magnitude (300 to 10k), and the subject
+  hint "Do you see a correlation?" introduces the concept of visualising correlation
+
+  So the full picture: Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots + log scale +
+  DataFrame merging + correlation intuition.
+
+
+| File | Description | Findings |
+|------|-------------|----------|
