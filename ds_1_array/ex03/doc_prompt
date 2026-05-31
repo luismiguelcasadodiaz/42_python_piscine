@@ -1,0 +1,133 @@
+# Coordinates: image (cartesian order) vs numpy.ndarray (matrix order)
+
+```python
+    arr = ft_load("animal.jpeg")
+    print("arr ",arr.shape)  # (height, width, channels)
+    im = Image.fromarray(arr)
+    print("img ", im.size)   # (width, height)
+```
+
+```bash
+arr  (768, 1024, 3)
+img  (1024, 768)
+
+```
+
+## image coordinate system
+The Python Imaging Library uses a Cartesian pixel coordinate system, with (0,0)
+in the upper left corner. Note that the coordinates refer to the implied pixel
+corners; the centre of a pixel addressed as (0, 0) actually lies at (0.5, 0.5).
+
+Coordinates are usually passed to the library as 2-tuples (x, y). 
+Rectangles are represented as 4-tuples, (x1, y1, x2, y2), with the upper left 
+corner given first.
+
+ValueError is raised if right coordinate is less than left or lower is less than upper
+
+
+A zoom is the expresion of the region of interest in the original image's size.
+if ROI's aspect ratio differs from image's aspect ratio, zooming distorts the image.
+It is better to pass a central poin to zoom on and a factor: > 1 Zooms in, < 1 zooms out.
+
+
+two approaches here: the direct one use crop() from Image or the pedagogic one practicinf multi-slicing the ndarray
+
+# Python's chained comparisons
+
+Python lets you chain comparison operators the way you'd write them in math. Instead of joining separate conditions with and, you write them in sequence:
+```python
+# These are equivalent
+0 <= x and x < 10
+0 <= x < 10
+```
+Python evaluates it left to right, and each intermediate value is only evaluated once. This matters when the expression has side effects or is expensive:
+
+```python
+# f() is called only once, not twice
+a < f() < b
+
+# equivalent to:
+_tmp = f()
+a < _tmp and _tmp < b
+```
+It short-circuits just like and — if any comparison is False, the rest aren't evaluated.
+
+# the axis
+## One approach is using Matplot
+The method imshow() from matplotlib.pyplot shows a image and plots axis with labels for image zise.
+
+Two considerations: 
+
+1.- we show a zoomed imaged in original's image canvas. we must adapt it wiht Extent argument.
+
+```python
+plt.imshow(Image.fromarray(image).crop((l, u, r, d)).resize((wai, hei)), extent=(0, z_wai, z_hei, 0))
+```
+2.- we invert the scale on y-axis.
+
+## other approach is reinventing the wheel.
+
+Image.new() Create an empty image biger than the original one on which i put a 
+drawing layer, ImageDraw.Draw(), to  write axis, labels and ticks wiht draw.text() and draw.line()
+
+
+
+#GrayScale
+the metod convert() flats the 3rd component of the image. tha its convert the e RGB figures into a one number that stans for gray scale.
+"L" stands for Luminance — the perceived brightness of a pixel. It comes from color science terminology where luminance represents the light intensity component of an image, independent of color.
+When you call .convert("L"), PIL transforms each RGB pixel into a single brightness value (0–255) using a weighted formula based on human perception:
+L = 0.299 * R + 0.587 * G + 0.114 * B
+Green gets the highest weight because our eyes are most sensitive to it, red next, blue least. This matches the ITU-R BT.601 standard for luminance.
+
+
+IN the zoom_42 function The grayscale image is pasted onto an RGBA canvas. 
+PIL converts the "L" mode image to RGBA during paste, resulting in pixels where
+R == G == B == gray_value. 
+When matplotlib receives a 4-channel RGBA image it uses the actual pixel
+   values — all channels equal → gray. 
+
+plt.imshow() receives a PIL Image in "L" mode directly (single channel / 2D). 
+When matplotlib gets a 2D array with no colormap specified, it applies its 
+default colormap — viridis — which maps low values to purple and high values
+to yellow-green. Hence the greenish look.
+This is a common matplotlib trap: 
+grayscale arrays always need cmap='gray' explicitly, otherwise viridis is
+  silently applied.
+# printing the array of a grayscale image.
+This image is a RGB color,
+```python
+images = [[[120, 111, 132],
+          [139, 130, 151],
+          [155, 146, 167],
+          [120, 127,  73],
+          [131, 136,  82],
+          [138, 143,  89]],
+         [[ 86, 101,  72],
+          [ 98, 113,  84],
+          [112, 127,  96],
+          [120, 156,  94],
+          [119, 154,  90],
+          [118, 153,  89]]]
+```
+
+when converted to and array with `arr = np.array(datos, dtype=np.uint8)` and into 
+an image with `im = Image.fromarray(arr)` there is no change when returns to an 
+array again with `gray_arr = np.array(im, dtype=np.uint8)`
+
+You get same shape shame data at print.
+
+But when i use convert("L") to get the gray scale, shape changes from `(2, 6, 3)`
+to `(2, 6)' and print does not match subject request. it prints like that:
+
+```bash
+[[116 135 151 150 128 135]
+ [ 29 105 119 138 136  76]]
+´´´
+
+we must add a dimension to the-grays-scale-converted-array like this 
+`gray_arr = gray_arr[:, :, np.newaxis]`
+
+```python
+
+
+
