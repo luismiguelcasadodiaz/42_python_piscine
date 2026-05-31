@@ -1,0 +1,14 @@
+np.zeros() creates a ndarry os floats.
+
+It is better to add dtype=np.uint8 to be sure that Image.fromarray() does not crash.
+
+# 90 º rotation logic
+
+The rotation is clock counter wise.
+
+Original's x-axis becomes rotated's y-axis.
+
+Original's first row becomes rotates's first column. 
+Original's lower x becomes rotated's higher y
+
+
