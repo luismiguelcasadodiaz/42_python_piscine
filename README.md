@@ -82,3 +82,5 @@ The overall aim in one sentence:
 | array2D.py | 2D arrays, `.shape`, row-wise slicing, negative indices, slice clamping, bool guard, `.tolist()` | [FINDINGS.md](ds_1_array/ex01/FINDINGS.md) |
 | load_image.py | Images as 3D `uint8` arrays, PIL/Pillow, `with` context, `os.path.abspath()`, `np.asarray()` | [FINDINGS.md](ds_1_array/ex02/FINDINGS.md) |
 | zoom.py | crop/resize/zoom distinction, multi-axis slicing, PIL vs NumPy coord order, `convert("L")`, `np.newaxis`, matplotlib `cmap='gray'` trap, PIL canvas with custom axes | [FINDINGS.md](ds_1_array/ex03/FINDINGS.md) |
+| rotate.py | 90° CCW rotation index remapping, shape swap on rotation, `np.zeros` float64 trap, `arr[y,x]` vs `arr[y][x]` | [FINDINGS.md](ds_1_array/ex04/FINDINGS.md) |
+| pimp_image.py | `.copy()` vs assignment, channel isolation `arr[:,:,n]`, inversion broadcast, luminance dot product, `astype()`, `plt.subplots`, `axes.flat`, `cmap='gray'` | [FINDINGS.md](ds_1_array/ex05/FINDINGS.md) |
