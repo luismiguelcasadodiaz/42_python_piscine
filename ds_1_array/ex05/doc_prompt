@@ -1,0 +1,10 @@
+assignation operator between ndarrays does not produce a hard copy.
+
+I neet to force the copy `ndarray_a = ndarray_b.copy()`
+
+
+
+to calculate luminiscence the Hard Way i use dot produt.
+i multiply the point RGB vectors by  vector of weights [0,299, 0.587, 0.114] 
+
+<as weight are float. i force dot product outoyt to be of type np.uint8 with astype()method.
