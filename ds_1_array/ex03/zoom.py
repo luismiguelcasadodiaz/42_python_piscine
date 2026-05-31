@@ -178,7 +178,7 @@ def zoom_42(image: np.ndarray, center: tuple, factor: float = 2.0):
     draw.line((margin, 0, margin, hei), fill="black")
     draw.line((margin, hei, margin + wid, hei), fill="black")
 
-    if factor >= 1:
+    if factor >= 1.0:
         arr_cropped = image[u:d, l:r]
         im_cropped = Image.fromarray(arr_cropped).convert("L")
         zoomed = im_cropped.resize((wid, hei))
