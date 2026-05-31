@@ -43,7 +43,7 @@ even if an exception occurs:
 
 ```python
 with Image.open(abspath) as im:
-    arr = np.array(im)
+    arr = np.array(im, dtype = np.uint8)
 ```
 
 Without `with`, a crash mid-function could leave the file handle open,

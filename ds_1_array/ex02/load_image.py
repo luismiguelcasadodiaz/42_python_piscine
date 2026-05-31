@@ -49,7 +49,7 @@ def ft_load(path: str) -> np.ndarray:
     """
     abspath = path_test(path)
     with Image.open(abspath) as im:
-        arr = np.array(im)
+        arr = np.array(im, dtype = np.uint8)
         print(f"The shape of image is: {arr.shape}")
         return arr
 
