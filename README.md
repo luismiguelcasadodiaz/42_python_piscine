@@ -120,3 +120,5 @@ Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots +
 
 | File | Description | Findings |
 |------|-------------|----------|
+| load_csv.py | DataFrame structure, column label rules, row index, `pd.concat` axis, `pd.read_csv` exceptions, trimmed preview with `iloc` + ellipsis column | [FINDINGS.md](ds_2_datatable/ex00/FINDINGS.md) |
+| all_life.py | `set_index()`, `.loc` vs boolean mask, row→Series implicit transpose, column dtype trap, `astype(int)`, `MaxNLocator`, line plot anatomy | [FINDINGS.md](ds_2_datatable/ex01/FINDINGS.md) |

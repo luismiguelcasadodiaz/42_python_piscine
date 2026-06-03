@@ -1,0 +1,114 @@
+# DataFrame
+
+A DataFrame is the core two-dimensional data structure in the pandas library 
+— think of it as a programmable spreadsheet or SQL table in Python.
+
+What it is: A labeled, size-mutable table of rows and columns. 
+Each column can hold a different data type (integers, strings, floats, booleans,
+etc.), and both rows and columns have labels (an index and column names).
+
+```python
+import pandas as pd
+
+# From a dictionary
+df = pd.DataFrame({
+    "name": ["Alice", "Bob", "Carol"],
+    "age": [30, 25, 35],
+    "score": [88.5, 92.0, 79.3]
+})
+
+```
+
+gives 
+
+|    |name |age|score|
+|----|-----|---|-----|
+|0   |Alice| 30| 88.5|
+|1   | Bob | 25| 92.0|
+|2   |Carol| 35| 79.3|
+
+## Key concepts:
+Each column is a pd.Series (a one-dimensional labeled array). The row labels form the Index, which defaults to 0, 1, 2… but can be dates, strings, or anything hashable.
+
+##Common operations at a glance:
++ Inspecting — df.head(), df.info(), df.describe(), df.shape, df.dtypes
++ Selecting — df["age"] for a column, df.loc[0] by label, df.iloc[0] by position, df[df["age"] > 25] for filtering.
++ Transforming — df.sort_values("score"), df.groupby("name").mean(), df.apply(func), df.merge(other_df), df.pivot_table(...).
++ Cleaning — df.dropna(), df.fillna(0), df.rename(columns={...}), df.drop_duplicates().
++ I/O — pd.read_csv(), pd.read_excel(), pd.read_sql(), and their df.to_*() counterparts for export.
+
+
+Why it matters: DataFrames give you vectorized operations (fast, no explicit loops), built-in alignment by labels, and tight integration with the rest of the Python data ecosystem (NumPy, Matplotlib, scikit-learn, etc.). They're the standard starting point for virtually any data analysis or ML pipeline in Python.
+Want me to dive deeper into any particular aspect — indexing, groupby, merging, performance tips, or something else?
+
+
+## Column's Label rules
+Column labels in pandas are surprisingly permissive — almost anything can be a label. But there are practical rules to keep in mind:
+Technically allowed: any hashable Python object — strings, integers, floats, tuples, even None.
+
+```python
+df = pd.DataFrame({
+    "name": [1],
+    42: [2],
+    (1, 2): [3],
+    None: [4],
+    3.14: [5]
+})
+```
+
+### Practical rules to follow:
+Use **strings** — dot access (`df.age`) only works with string column names that are
+valid Python identifiers (no spaces, no starting with a digit, no special 
+characters, and not colliding with existing DataFrame attributes like shape, 
+index, values, etc.).
+```python
+df.my_col      # works if column is "my_col"
+df.2020        # syntax error
+df.shape       # returns the DataFrame shape, NOT a "shape" column
+```
+
+**Duplicates** are allowed but cause headaches — selecting a duplicate name returns
+multiple columns, and many operations behave unpredictably.
+
+**Spaces and special characters** work but force bracket access:
+```python
+df["first name"]     # works
+df.first name        # syntax error
+```
+
+Bottom line: stick with simple, unique strings — ideally lowercase with underscores (snake_case). Everything else is technically valid but will cause friction eventually.
+
+
+# row's index
+
+Can not be removed.
+
+Subject request to print:
+
+```bash
+country 1800 1801 1802 1803 ... 2096 2097 2098 2099 2100
+Afghanistan 28.2 28.2 28.2 28.2 ... 76.2 76.4 76.5 76.6 76.8
+```
+
+I manages in 4 steps.
+
++ get left side with columns 0, 1, 2, 3, 4 slicing like this `[:, :5]`
++ get right side wiht columns -5 -4 -3 -2 -1 slicing like this `[:, -5:]`
++ Addign to hte left a new column havin 3 dots in all elements `left["..."] = "..."´
++ concatenates both parts joined = pd.concat([left, right], axis= 1)
+
+
+axis=1 means concatenate side by side (columns).
+
+axis=0 (default) — stacks vertically (adds more rows)
+axis=1 — joins horizontally (adds more columns)
+
+
+# read_csv Exceptions not related to filesystem
+
+
+pd.errors.EmptyDataError — the file is completely empty (zero bytes).
+pd.errors.ParserError — the file content can't be parsed as CSV (malformed rows,
+inconsistent number of columns, bad delimiters).
+UnicodeDecodeError — the file uses an encoding that doesn't match the defaulti
+(UTF-8)
