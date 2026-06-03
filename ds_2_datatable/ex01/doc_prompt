@@ -1,0 +1,112 @@
+  # ex01 pedagogic aim is: 
+  row filtering + .set_index / .loc + transpose +
+  DataFrame→Series collapse + basic line plot
+  anatomy.
+  
+
+## 1. Row selection by label vs position
+
+The country name is in the first column (country), which makes it a natural 
+candidate for df.set_index("country")
+
+
+set_index() turns an existing column into the row index.
+
+```python
+df = pd.DataFrame({
+    "country": ["Spain", "France", "Italy"],
+    "population": [47, 67, 59]
+})
+```
+
+Before:
+
+```bash
+   country  population
+0    Spain          47
+1   France          67
+2    Italy          59
+```
+
+```python
+df = df.set_index("country")
+```
+After:
+
+```bash
+         population
+country
+Spain            47
+France           67
+Italy            59
+```
+
+The "country" column is no longer a regular column — it's now the row label. 
+
+This means you can do:
+`df.loc["Spain"]` to  get Spain's row directly by name.
+
+A few things to know:
+By default it returns a new DataFrame (doesn't modify the original).
+Use inplace=True or reassign like above.
+
+To undo it: df.reset_index() moves the index back into a regular column.
+
+You can also set multiple columns as index: df.set_index(["country", "year"]) creates a MultiIndex.
+
+
+Alternatively you can filter with a boolean mask df[df["country"] == "Spain"].
+Both produce the same result but teach different indexing approaches — label-based .loc vs boolean filtering.
+  
+  1. Wide-format data and the transpose problem                                                                      
+   
+  The CSV has years as column names (1800, 1801, … 2100). To plot year on the x-axis you need years to be the index, 
+  not column headers. This forces you to confront .T (transpose) — turning one row (a country) into a Series where
+  the index is years and the values are life expectancy. This is probably the deepest new concept in the exercise.
+
+
+  3. From DataFrame to Series
+
+After filtering one row you get a single-row DataFrame, not a Series. 
+To plot cleanly you need to either .squeeze()
+   or .iloc[0] to collapse it to a 1D Series. This is the first time the distinction between a DataFrame and a Series
+   matters practically.
+
+##  4. Line plot basics
+
+plt.plot() or Series.plot(), adding plt.title(), plt.xlabel(), plt.ylabel() — the minimum anatomy of a
+well-labelled chart. The subject explicitly requires all three.
+
+we plot about 300 data points. We can not print all 300 labels on x-axis.
+
+We ask to plot only 6 labels wiht set_major_locator()
+
+```python
+  ax = plt.gca()  # Get current axes
+  ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=6))
+```
+##  5. Column names as integers
+
+  Gapminder year columns are integers (1800, not "1800"), which can surprise you when slicing or converting to float
+  for the axis. Worth noting when the x-axis labels look wrong.
+
+This instruction "data_plot = data.loc[country]" returns a pandas.series of 
+301 rows when data is a DataFrame of 192 rows with 301 columns, Because 
+.loc[country] selects a single row. 
+
+When you extract one row from a DataFrame, pandas returns it as a Series where 
+the former columns become the index.
+
+So your 301 columns (likely years) become 301 entries in the Series, with each 
+year as the index label and the corresponding value as the data. 
+That's the expected behavior — it didn't add rows, it transposed a row into a 
+Series.
+
+
+if the DataFrame column names are string, the index of the pandas.series 
+resulting  form .loc[country] keeps same type.
+ .loc[] preserves the original dtypes — it just moves the column names into 
+ the Series index without any type conversion.
+You can  change the index type from string to integer with `data_plot.index = data_plot.index.astype(int)`
+
+when index type is a number, plot() show only a subset of all labels.
