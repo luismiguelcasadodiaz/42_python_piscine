@@ -1,0 +1,190 @@
+learning aims for these exercise are:
+column range slicing + y-axis formatting + cumulative plot state + labelled series +
+  plt.legend() + data selection rationale.
+
+# Year range filtering — column selection on a DataFrame                                                          
+   
+The subject requires displaying only years 1800 to 2050, but the CSV likely 
+contains years beyond that. This forces you to slice the columns by label 
+range: df.loc[:, "1800":"2050"] or df.loc[:, 1800:2050] (after dtype
+conversion). First time you slice columns by range rather than rows.
+
+# Year range filtering — Row selection on a Pandas Dataframe
+
+`iloc` stands for integer location. 
+It selects data by position (0, 1, 2…), like indexing a list.
+```python
+s = pd.Series([10, 20, 30, 40, 50], index=["a", "b", "c", "d", "e"])
+a    10
+b    20
+c    30
+d    40
+e    50
+
+Single element:
+```python
+s.iloc[0]      # 10 (first)
+s.iloc[-1]     # 50 (last)
+```
+
+Slice:
+```python
+s.iloc[1:3]    # b=20, c=30
+```
+
+Compare with loc which selects by label:
+```python
+s.loc["b"]     # 20 (by name)
+s.iloc[1]      # 20 (by position)
+```
+
+The distinction matters when your index isn't 0, 1, 2… — like in your case 
+where the index is years (1800, 1801…). iloc[0] always means "first row" 
+regardless of what the label says, while loc[1800] means "the row labeled 1800."
+
+
+Works the same way on DataFrames with two dimensions: df.iloc[row, col].
+
+get_loc() returns the integer position of a column name in the index.
+```python
+# If your columns are:
+# ["country", "1800", "1801", "1802", "1803", ...]
+
+data.columns.get_loc("country")  # 0
+data.columns.get_loc("1800")       # 1
+data.columns.get_loc("1803")       # 4
+```
+
+It translates a label into a position number — like finding the index of an 
+item in a list.
+
+In your case it was used to build a slice by position, because you can't 
+directly slice and pick individual columns at the same time in loc. 
+
+So instead of:
+```python
+data.loc[:, yr_init:yr_end]  # works alone but can't add "country"
+```
+You get the positions and build the column list manually:
+```python
+start = data.columns.get_loc(yr_init)  # e.g. 51
+end = data.columns.get_loc(yr_end)     # e.g. 101
+cols = data.columns[start:end+1]       # slice by position
+```
+
+It's essentially doing for columns what iloc does for rows — converting a name to a number.
+
+# Large number formatting on the y-axis
+
+Population values are in the hundreds of millions — the raw numbers produce i
+ugly axis labels (60000000). The
+  subject example shows 60M. 
+
+This introduces either a custom formatter (matplotlib.ticker.FuncFormatter) or scaling
+  the data manually before plotting (series / 1_000_000).
+FuncFormatter lets you define a custom function to format tick labels on an axis.
+
+You write a function that takes two arguments — the tick value and its positioni
+— and returns a string:
+FuncFormatter(lambda v, p: f"{v/1e6:.0f}M")
+
+  3. Two series on the same axes — state accumulation
+
+  Each plt.plot() call adds to the current figure rather than replacing it. This is implicit state that beginners
+  stumble on — understanding that plt.plot() is cumulative until plt.show() or plt.clf() is called.
+
+# plt.legend() requires labels to be set first
+
+plt.legend() adds a box showing which line is which. 
+It uses the label you set in each plot() call:
+Labels must be passed to plt.plot(label="France")
+
+Without labels, legend has nothing to show. 
+If you forgot them, you can pass labels directly: `plt.legend(["Spain", "France"])`
+
+Common options:
+```python
+plt.legend(loc="upper left")       # position
+plt.legend(fontsize=12)            # text size
+plt.legend(frameon=False)          # remove the box border
+```
+
+loc values include "upper right" (default), "upper left", "lower right", "lower left", "center", or "best" (pandas picks the least obstructive spot).
+
+
+  5. Choosing a meaningful comparison
+
+  The subject says "a country of your choice" — a small nudge toward thinking about what makes a comparison
+  meaningful (similar population, neighbouring country, historical rival), which is the data literacy angle:
+  visualisation is only useful if the comparison is intentional.
+
+
+
+
+Boolean filtering always returns a DataFrame because the result could be zero, 
+one, or many rows — pandas doesn't know in advance, so it keeps the table 
+structure.
+
+loc() with a single label returns a Series because you're asking for exactly
+one row. Pandas "flattens" it — the column names become the Series index:
+```python
+
+data.loc["Spain"]
+# country      Spain
+# 1800          29.5
+# 1801          29.5
+# dtype: object
+```
+
+If you want loc to return a DataFrame instead, pass a list:
+
+```python
+data.loc[["Spain"]]          # note the double brackets — returns DataFrame
+data.loc[["Spain", "Italy"]] # also a DataFrame
+```
+
+The double brackets [[ ]] tell pandas "give me a subset of rows" (DataFrame), 
+while single brackets [ ] say "give me this one row" (Series).
+
+For plotting two series with plt.plot(), Series is simpler and gives you more 
+control:
+```python
+spain = data.loc["Spain", 1:]
+france = data.loc["France", 1:]
+
+plt.plot(spain.index, spain.values, label="Spain")
+plt.plot(france.index, france.values, label="France")
+plt.legend()
+plt.show()
+```
+
+Each Series already has the x-values (.index) and y-values (.values) built in. 
+
+You control labels, colors, and styles per line easily.
+DataFrame works too but it's more of a shortcut for quick exploration:
+```python
+data_plot = data.loc[["Spain", "France"], 1:].T
+data_plot.plot()
+plt.show()
+```
+The .T transposes it so countries become columns and years become rows — which 
+is what matplotlib expects. It plots everything at once but you have less 
+control over individual lines.
+
+Bottom line: 
+Use two Series when you want explicit control over how each line looks. 
+Use a DataFrame with .plot() when you just want a quick look at the data.
+
+#Visual separator for readability
+It's just Python's way of writing 1000000 with visual separators for readability. The underscores act like commas in everyday notation — they're ignored by the interpreter and don't change the value at all.
+```python
+# These are all identical:
+1000000
+1_000_000
+10_00_000  # any grouping works, though groups of 3 are conventional
+
+# Works with floats too:
+1_000_000.50
+```
+It was introduced in Python 3.6 (PEP 515) because large numbers like 10000000000 are hard to read at a glance, while 10_000_000_000 makes it immediately clear it's 10 billion.
+
