@@ -1,0 +1,121 @@
+pd.merge() joins two DataFrames together based on a common column, like a SQL JOIN.
+
+Basic example:
+```python
+df1 = pd.DataFrame({
+    "country": ["Spain", "France", "Italy"],
+    "population": [47, 67, 59]
+})
+
+df2 = pd.DataFrame({
+    "country": ["Spain", "France", "Germany"],
+    "capital": ["Madrid", "Paris", "Berlin"]
+})
+
+result = pd.merge(df1, df2, on="country")
+```
+
+Result — only matching rows kept:
+```bash
+country  population capital
+    Spain          47  Madrid
+   France          67   Paris
+```
+
+The how parameter controls which rows survive:
+"inner" (default) — only rows that match in both DataFrames.
+"left" — all rows from df1, fill NaN where df2 has no match.
+"right" — all rows from df2, fill NaN where df1 has no match.
+"outer" — all rows from both, NaN wherever there's no match.
+```python
+
+pd.merge(df1, df2, on="country", how="outer")
+
+```
+```bash
+
+   country  population capital
+     Spain        47.0  Madrid
+    France        67.0   Paris
+     Italy        59.0     NaN
+   Germany         NaN  Berlin
+
+```
+
+When column names differ between the two DataFrames:
+```python
+pd.merge(df1, df2, left_on="country_name", right_on="nation")
+```
+Merging on multiple columns:
+```python
+pd.merge(df1, df2, on=["country", "year"])
+```
+It keeps all columns from both DataFrames. 
+The key column appears once (not duplicated).
+```python
+df1: ["country", "population"]
+df2: ["country", "capital"]
+
+pd.merge(df1, df2, on="country")
+# columns: ["country", "population", "capital"]
+```
+
+When both DataFrames have a non-key column with the same name, pandas adds 
+suffixes to distinguish them:
+```python
+df1 = pd.DataFrame({"country": ["Spain"], "value": [10]})
+df2 = pd.DataFrame({"country": ["Spain"], "value": [99]})
+
+pd.merge(df1, df2, on="country")
+  country  value_x  value_y
+    Spain       10       99
+```
+_x comes from the left DataFrame, _y from the right. You can customize them:
+```python
+pd.merge(df1, df2, on="country", suffixes=("_pop", "_gdp"))
+# columns: ["country", "value_pop", "value_gdp"]
+``
+
+# serie name
+
+`income_year = income[year]` returns a serie with 1900 as name. So the merge return two columns starting with 1900 ending with the suffises.
+
+in such a way that invalides the dot name of the colum
+
+```python
+    plt.scatter(data.1900_dolar, data.1900_year)
+                         ^
+SyntaxError: invalid decimal literal
+```
+
+ as i want to use `plt.scatter(data.dolar, data.year)` i has to rename the series.
+
+```python
+income_year = income[year].dropna().rename("dolar")
+life_year = life[year].dropna().rename("year")
+```
+# NaN.
+
+to remove rows wiht Nan value dropna() helsp us.
+
+dropna also works on DataFrame.
+
+On a DataFrame, the how parameter controls the behavior:
+```python
+df.dropna()              # drops row if ANY column has NaN (default)
+df.dropna(how="all")     # drops row only if ALL columns are NaN
+```
+
+You can also limit it to specific columns:
+
+```python
+df.dropna(subset=["income", "population"])  # only checks these columns
+```
+And axis lets you drop columns instead of rows:
+```python
+
+df.dropna(axis=1)        # drops COLUMNS that have any NaN
+```
+
+So the default (how="any", axis=0) is the strictest — one NaN anywhere in the row and it's gone.
+
