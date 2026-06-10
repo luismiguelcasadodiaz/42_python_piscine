@@ -1,0 +1,173 @@
+# __str__89 and __repr__()
+Both are special methods that control how an object is represented as a string, 
+but they serve different audiences.
+
+__str__ is meant for the end user — a nice, readable representation. 
+It's what gets called when you use print() or str().
+
+__repr__ is meant for the developer — an unambiguous representation, ideally 
+one that could recreate the object. It's what you see when you inspect an 
+object in the console.
+
+```python
+class Character:
+    def __init__(self, name, is_alive=True):
+        self.name = name
+        self.is_alive = is_alive
+
+    def __str__(self):
+        status = "alive" if self.is_alive else "dead"
+        return f"{self.name} is {status}"
+
+    def __repr__(self):
+        return f"Character('{self.name}', {self.is_alive})"
+
+ned = Character("Ned", False)
+
+print(ned)        # calls __str__ → "Ned is dead"
+print(repr(ned))  # calls __repr__ → "Character('Ned', False)"
+```
+## How Python decides which to call:
+
++ `print(obj)` and `str(obj)` → tries `__str__` first
++ Typing `obj` in the console, or using `repr(obj)` → calls `__repr__`
++ f-strings like `f"{obj}"` → calls `__str__`
++ If `__str__` is not defined, Python **falls back** to `__repr__`. But not the
+other way around.
+
+That fallback is why, if you only define one, `__repr__` is the more useful 
+choice — it covers both cases. A common pattern is to define `__repr__` for 
+debugging and only add `__str__` when you need a polished, user-facing format.
+
+# Decorators
+
+A decorator in Python is a function that takes another function (or class) as 
+input, adds some behavior to it, and returns a modified version — all without 
+changing the original function's code.
+
+Syntax: You apply a decorator with the @ symbol above a function definition:
+```python
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+```
+
+This is equivalent to writing say_hello = my_decorator(say_hello).
+
+## What are they used for?
+Decorators let you wrap reusable logic around functions. Common uses include:
+
++ Logging — automatically log every time a function is called.
++ Timing — measure how long a function takes to run.
++ Access control / authentication — check permissions before running a function.
++ Caching / memoization — store results so repeated calls with the same arguments are instant (e.g., @functools.lru_cache).
++ Retrying — automatically retry a function if it fails.
+
+Simple example:
+```python
+def log_call(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}...")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} finished.")
+        return result
+    return wrapper
+
+@log_call
+def greet(name):
+    print(f"Hi, {name}!")
+
+greet("Alice")
+# Output:
+# Calling greet...
+# Hi, Alice!
+# greet finished.
+```
+
+The key idea: greet still works the same way from the caller's perspective, but
+now it has extra logging behavior wrapped around it — and you didn't have to 
+touch greet's own code.
+
+# Factory method pattern
+
+The factory method pattern gives you a method (often a classmethod in Python) 
+that constructs and returns an object, instead of calling the constructor 
+directly. 
+
+It lets you give that creation path a meaningful name and customize the setup logic.
+
+## Why use it instead of __init__?
+
++ **Clarity** — `User.from_email("a@b.com")` communicates intent better than 
+`User("a@b.com", None, None, True)`.
++ **Multiple construction paths** — a class might be built from a dict, a JSON string, a file, a database row, etc. You can't have multiple `__init__` signatures cleanly, but you can have multiple factory methods.
++ **Preprocessing** — the factory can validate, transform, or fetch data before creating the object.
+
+```python
+class Color:
+    def __init__(self, r, g, b):
+        self.r, self.g, self.b = r, g, b
+
+    @classmethod
+    def from_hex(cls, hex_str):
+        hex_str = hex_str.lstrip("#")
+        return cls(int(hex_str[0:2], 16),
+                   int(hex_str[2:4], 16),
+                   int(hex_str[4:6], 16))
+
+    @classmethod
+    def from_name(cls, name):
+        names = {"red": (255, 0, 0), "green": (0, 128, 0)}
+        r, g, b = names[name]
+        return cls(r, g, b)
+
+# Three ways to build the same kind of object:
+c1 = Color(255, 0, 0)
+c2 = Color.from_hex("#FF0000")
+c3 = Color.from_name("red")
+```
+
+You see this all over the Python standard library too — `dict.fromkeys()`, `datetime.fromtimestamp()`, `int.from_bytes()` are all factory methods offering a named, alternative way to build familiar objects.
+
+
+# stale docstring
+A stale docstring is a docstring (documentation string in code) that no longer accurately describes the function, class, or module it's attached to. It happens when someone updates the code's behavior — changing parameters, return values, side effects, or logic — but forgets to update the accompanying documentation.
+For example, imagine a function that originally took two arguments and its docstring says so. Later, a developer adds a third parameter but doesn't touch the docstring. Now the docstring is "stale" — it describes an older version of the code and can actively mislead anyone reading it.
+Stale docstrings are considered worse than no docstring at all, because incorrect documentation creates false confidence. A developer trusting a stale docstring might pass the wrong arguments, mishandle return values, or miss important side effects.
+Common causes include refactoring, adding/removing parameters, changing return types, and merging code from different branches where documentation wasn't reconciled. Linters and tools like pydocstyle, darglint, or interrogate (for Python) can help catch some forms of staleness automatically, though fully detecting semantic drift between code and docs remains tricky.
+
+
+# eval() and repr()
+The convention is that __repr__() should return a string that, when passed to eval(), recreates the object:
+```Python
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+
+p = Point(3, 5)
+print(repr(p))        # Point(3, 5)
+
+p2 = eval(repr(p))    # creates a new Point(3, 5)
+print(p2.x, p2.y)     # 3 5
+
+repr([1, 2, 3])          # '[1, 2, 3]'
+eval('[1, 2, 3]')        # [1, 2, 3] ✅
+
+repr("hello")            # "'hello'"
+eval("'hello'")          # 'hello' ✅
+
+repr({'a': 1})            # "{'a': 1}"
+eval("{'a': 1}")          # {'a': 1} ✅
+
+```
+The difference between '__repr__' and '__str__':
+
+`__repr__` → for developers, should be unambiguous, ideally 'eval()'-able
+`__str__` → for users, should be readable
+
+It's a convention, not a requirement — for complex objects it's not always possible to make `repr` eval-able.
