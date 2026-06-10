@@ -1,0 +1,162 @@
+# Multiple heritance: preferences
+
+Python handles this through the Method Resolution Order (MRO), and yes, the 
+order in the class declaration absolutely matters.
+## How it works
+
+Python uses the C3 linearization algorithm. When Diamond inherits from C1 and
+C2, it searches for methods left-to-right in the declaration order, then up to
+the common parent.
+
+C3 guarantees three properties: 
++ children are checked before parents, 
++ the order you list parents in the class definition is preserved, 
++ and no class appears before its subclasses. 
+
+If these constraints can't all be satisfied simultaneously, Python raises a 
+TypeError at class definition time rather than silently picking a bad order.
+
+Taking your King class as an example:
+        Character
+        /      \
+   Baratheon  Lannister
+        \      /
+         King
+
+This is a classic diamond pattern. C3 linearization produces:
+pythonKing → Baratheon → Lannister → Character → ABC → object
+
+```python
+from abc import ABC, abstractmethod
+
+class Base(ABC):
+    @abstractmethod
+    def greet(self):
+        pass
+
+    def who(self):
+        return "Base"
+
+class C1(Base):
+    def greet(self):
+        return "Hello from C1"
+
+    def who(self):
+        return "C1"
+
+class C2(Base):
+    def greet(self):
+        return "Hello from C2"
+
+    def who(self):
+        return "C2"
+
+# C1 is checked FIRST because it's listed first
+class Diamond(C1, C2):
+    pass
+d = Diamond()
+d.greet()  # "Hello from C1" — C1 wins because it's first
+d.who()    # "C1"
+
+```
+
+Swap the order and C2 wins:
+
+```python
+class Diamond(C2, C1):
+    pass
+
+d = Diamond()
+d.greet()  # "Hello from C2"
+```
+
+## Explicitly picking a sibling's method
+
+You have three ways to call a specific sibling's method:
+
+1. Direct class reference — the most explicit and common approach:
+```python
+class Diamond(C1, C2):
+    def greet(self):
+        return C2.greet(self)  # force C2's version
+```
+
+2. super() with arguments — lets you skip to a specific point in the MRO:
+```python
+class Diamond(C1, C2):
+    def greet(self):
+        return super(C1, self).greet()  # skips past C1 → resolves to C2
+```
+
+This says "start searching the MRO after C1," so it lands on C2.
+3. Inspect the MRO directly to understand what Python is doing:
+```python
+print(Diamond.__mro__)
+# (<class 'Diamond'>, <class 'C1'>, <class 'C2'>, <class 'Base'>, <class 'object'>)
+```
+The MRO is the exact lookup order. First match wins for any method call.
+
+The super() chain (cooperative inheritance)
+
+If you want both siblings to run, each class should call super() so the chain 
+propagates through the entire MRO:
+```python
+class C1(Base):
+    def greet(self):
+        return "C1, " + super().greet()
+
+class C2(Base):
+    def greet(self):
+        return "C2"  # end of chain (or call super() to hit Base)
+
+class Diamond(C1, C2):
+    pass
+
+Diamond().greet()  # "C1, C2" — C1 runs, its super() forwards to C2
+```
+|Goal                     |Technique                                          |
+|-------------------------|---------------------------------------------------|
+|Default winner           |List that sibling first in the class declaration   |
+|Force a specific sibling |Call SiblingClass.method(self) directly            |
+|Skip a sibling in the MRO|super(ClassToSkip, self).method()                  |
+|Run all siblings         |Have every class call super() (cooperative pattern)|
+
+# getters & setter
+Explicit getters/setters are unpythonic. 
+This is a Java/C# habit. 
+In Python, just access attributes directly. 
+If you later need validation or logic, you retrofit it with @property without 
+changing the caller's code:
+
+```python
+class King(Baratheon, Lannister):
+
+    def __init__(self, eyes: str = "", hairs: str = ""):
+        self.eyes = eyes
+        self.hairs = hairs
+```
+That's it — callers do king.eyes = "green" and print(king.hairs). If you eventually need control:
+```python
+    @property
+    def eyes(self) -> str:
+        return self._eyes
+
+    @eyes.setter
+    def eyes(self, color: str) -> None:
+        if color not in ("green", "blue", "brown", "black"):
+            raise ValueError(f"Invalid eye color: {color}")
+        self._eyes = color
+```
+Callers still write king.eyes = "green" — nothing changes for them.
+
+Underscores are required to avoid the infinite recursion that happens when the 
+property and the stored attribute have the same name.
+
+The underscore self._eyes is just a separate, plain attribute where the actual 
+data lives. The property is the "public door," the underscore is the "back room"
+
+
+The single underscore _eyes is a Python convention meaning "this is internal, 
+don't touch it directly." Nothing enforces it — it's just a signal to other 
+developers. Callers still use king.eyes = "green", which goes through the setter. 
+They never need to know _eyes exists.
