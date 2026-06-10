@@ -1,0 +1,68 @@
+Duck typing is a programming philosophy summed up by the phrase: "If it walks 
+like a duck and quacks like a duck, then it's a duck."
+
+In a duck-typed language like Python, what matters is not an object's type, but
+whether it has the methods and properties you're trying to use. 
+
+You never need to declare "this object implements interface X" — you just call 
+the method, and if it works, it works.
+
+This contrasts with statically-typed languages like Java or C#, where you'd 
+need to explicitly declare that objects implement a method before passing them
+to a function that expects such method.
+
+The tradeoff is flexibility versus safety. 
+Duck typing makes code concise and adaptable — you can pass any compatible 
+object without boilerplate — but errors only surface when the code actually 
+runs, which can make bugs harder to catch early. That's exactly the gap that 
+the abc module fills: it lets you optionally add interface-like contracts when 
+the flexibility becomes a liability.
+
+The abc module (Abstract Base Classes) is part of Python's standard library and
+provides the infrastructure for defining abstract base classes. It was 
+introduced in Python 2.6 via PEP 3119.
+
++ What it provides
+
+The module's core building block is the ABC class, which you use as a parent to
+mark your own class as abstract. Alongside it, the @abstractmethod decorator 
+lets you flag specific methods that any subclass must override before it can be
+instantiated. 
+
+You can stack over @abstractmethod with @classmethod or @staticmethod.
+
++ How it works under the hood
+
+When you decorate a method with @abstractmethod, Python adds it to an internal 
+set called __abstractmethods__ on the class. At instantiation time, Python 
+checks whether that set is empty. 
+If it's not — meaning some abstract methods haven't been overridden — it raises
+a TypeError. This is a runtime check, not a compile-time one, which is an 
+important distinction compared to languages like Java or C#.
+
++Beyond your own classes
+
+The abc module also powers the register() mechanism, which lets you declare 
+that a class is a "virtual subclass" of an abstract base class without actually
+inheriting from it. This is useful when you want isinstance() and issubclass() 
+checks to work for classes you don't control:
+
+
+
+# super()
+## When you need super().__init__()
+when the parent sets up attributes or logic that the child depends on. 
+In your case, Stark calls super().__init__(first_name, is_alive) because 
+Character.__init__ is where self.first_name and self.is_alive get stored. 
+Skip it, and those attributes won't exist.
+
+## When you can skip it
+when the parent's __init__ doesn't do anything meaningful. Character calls 
+super().__init__() on ABC, but ABC doesn't really set up anything. 
+So technically you could omit it in Character and everything would still work 
+fine.
+
+If a child's __init__ does nothing except forward the same arguments to the 
+parent, it's redundant — Python will automatically use the parent's __init__ 
+through inheritance:
+
