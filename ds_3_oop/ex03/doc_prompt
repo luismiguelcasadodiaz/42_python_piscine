@@ -1,0 +1,42 @@
+# Operator overloading
+
+
+# dunder methods
+Dunder methods (short for "double underscore") are special methods in Python classes that are surrounded by double underscores, like __init__ or __str__. They let you define how your objects behave with built-in Python operations — operators, built-in functions, iteration, context managers, and more.
+Here are the most commonly used ones:
++ Object lifecycle — __init__(self, ...) initializes a new instance, __new__(cls, ...) controls instance creation, and __del__(self) runs when an object is garbage collected.
++ String representation — __str__(self) defines what str(obj) and print(obj) return (human-readable), while __repr__(self) defines the developer-facing representation (ideally something you could paste back into Python).
++ Comparison — __eq__, __ne__, __lt__, __le__, __gt__, __ge__ let you use ==, !=, <, <=, >, >= between objects.
++ Arithmetic — __add__, __sub__, __mul__, __truediv__, __floordiv__, __mod__, __pow__ map to +, -, *, /, //, %, **. Each has a reflected version (e.g. __radd__) for when your object is on the right side.
++ Container behavior — __len__ for len(), __getitem__ / __setitem__ / __delitem__ for bracket access (obj[key]), __contains__ for in, and __iter__ / __next__ for iteration.
++ Attribute access — __getattr__, __setattr__, __delattr__ intercept attribute lookups and assignments. __getattribute__ intercepts every attribute access (use with care).
++ Context managers — __enter__ and __exit__ let your object work with with statements.
++ Callable objects — __call__(self, ...) lets you call an instance like a function: obj().
++ Hashing — __hash__ lets objects be used as dictionary keys or in sets.
+
+A quick example tying a few together:
+```python
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __len__(self):
+        return int((self.x**2 + self.y**2) ** 0.5)
+>>> v = Vector(3, 4)
+>>> v + Vector(1, 2)
+Vector(4, 6)
+>>> len(v)
+5
+```
+
+The full list lives in the Python data model docs — there are around 100+ of them, but the ones above cover the vast majority of real-world use cases.

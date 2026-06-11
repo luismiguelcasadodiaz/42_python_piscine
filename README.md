@@ -124,3 +124,43 @@ Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots +
 | all_life.py | `set_index()`, `.loc` vs boolean mask, row→Series implicit transpose, column dtype trap, `astype(int)`, `MaxNLocator`, line plot anatomy | [FINDINGS.md](ds_2_datatable/ex01/FINDINGS.md) |
 | aff_pop.py | column range slicing, `get_loc()`, `iloc` vs `loc`, `loc[x]`→Series vs `loc[[x]]`→DataFrame, cumulative plot state, `plt.legend()`, `FuncFormatter`, suffix parsing, `_` in numeric literals | [FINDINGS.md](ds_2_datatable/ex02/FINDINGS.md) |
 | projection_life.py | `pd.merge()`, join semantics, duplicate column suffixes, Series `.rename()` before merge, `dropna()`, scatter plot, log scale, correlation intuition | [FINDINGS.md](ds_2_datatable/ex03/FINDINGS.md) |
+
+
+## oop
+
+ Here is what you will learn across the 5 exercises, from a concepts perspective:
+
++  ex00 — Abstract classes and basic inheritance
+  You will learn what an abstract class is: a class that defines a contract (a method that must be implemented) but
+  cannot be instantiated directly. You will learn how a child class inherits from it, satisfying that contract, and
+  how instance attributes and methods work together to represent an object's state.
+
++  ex01 — Subclass hierarchies, string representation, and class methods
+  You will learn how to build multiple sibling classes from the same parent, how to control how an object presents
+  itself as a string (the difference between a human-readable and an unambiguous representation), and how to define
+  alternative ways to construct objects at the class level rather than the instance level.
+
++  ex02 — Multiple inheritance and the diamond problem
+  You will learn what happens when a class inherits from two parents that share a common ancestor (the diamond
+  problem), how the language resolves method lookup order in that situation, and how to control read/write access to
+  attributes through properties instead of exposing them directly.
+
++  ex03 — Operator overloading
+  You will learn how to make your own classes respond to standard arithmetic operators, so that the natural syntax of
+  the language (e.g. object + 5) triggers your own logic. This is the concept of giving objects behavior that
+  mirrors built-in types.
+
++  ex04 — Static methods
+  You will learn how to attach utility functions to a class without requiring an instance to be created first, and
+  how decorators are used to change the nature of a method.
+
++  Running thread across all exercises: you will also practice writing proper documentation for every class and
+  method, structuring programs with a main function, and keeping all logic out of the global scope — habits that
+  distinguish professional code from scripts.
+
+| File | Description | Findings |
+|------|-------------|----------|
+| S1E9.py | Abstract base class, `@abstractmethod` contract, single inheritance, `__dict__`, duck typing vs. ABC | [Findings.md](ds_3_oop/ex00/Findings.md) |
+| S1E7.py | Sibling subclasses, `super().__init__()` extension, `__str__` vs `__repr__`, `eval(repr(obj))` convention, `@classmethod` factory method | [Findings.md](ds_3_oop/ex01/Findings.md) |
+| DiamondTrap.py | Multiple inheritance, diamond problem, MRO, C3 linearization, `@property` with private backing store, cooperative `super()` chaining | [Findings.md](ds_3_oop/ex02/Findings.md) |
+| ft_calculator.py | Operator overloading, element-wise vectorised ops, side-effect dunder methods, selective error handling, mutable default argument pitfall | [Findings.md](ds_3_oop/ex03/Findings.md) |
