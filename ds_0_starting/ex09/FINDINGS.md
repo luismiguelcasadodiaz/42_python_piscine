@@ -71,6 +71,9 @@ All commands run from the folder containing `pyproject.toml`:
 | `pip install ./dist/ft_package-0.0.1-py3-none-any.whl` | Install from wheel |
 | `pip list` | Show installed packages |
 | `pip show -v ft_package` | Show package details |
+| `pip uninstall ft_package` | Uninstall the package (prompts for confirmation)|
+| `pip uninstall -y ft_package`  | Uninstall without confirmation prompt|
+| `pip uninstall -y ft_package && pip install .` | Clean reinstall — uninstall then reinstall from source
 
 ## Distribution formats
 

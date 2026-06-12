@@ -1,0 +1,49 @@
+#!/usr/bin/bash
+echo " ================ test ex00 ================= "
+cd ~/Desktop/ds_0/ex00
+python3 Hello.py | cat -e
+echo " ================ test ex01 ================= "
+cd ~/Desktop/ds_0/ex01
+python3 format_ft_time.py | cat -e
+echo " ================ test ex02 ================= "
+cd ~/Desktop/ds_0/ex02
+cp ~/Documents/outer/42_python_piscine/ds_0_starting/ex02/tester.py .
+python3 ./tester.py
+echo " ================ test ex03 ================= "
+cd ~/Desktop/ds_0/ex03
+cp ~/Documents/outer/42_python_piscine/ds_0_starting/ex03/tester.py .
+python3 ./tester.py
+echo " ================ test ex04 ================= "
+cd ~/Desktop/ds_0/ex04
+python3 whatis.py 14
+python3 whatis.py -5
+python3 whatis.py
+python3 whatis.py 0
+python3 whatis.py Hi!
+python3 whatis.py 13 5
+echo " ================ test ex05 ================= "
+cd ~/Desktop/ds_0/ex05
+python3 building.py  "Python 3.0, released in 2008, was a major revision that is not completely backward
+compatible with earlier versions. Python 2 was discontinued with version 2.7.18 in 2020."
+echo " ================ test ex06 ================= "
+cd ~/Desktop/ds_0/ex06
+python3 filterstring.py 'Hello the World' 4
+python3 filterstring.py 'Hello the World' 99
+python3 filterstring.py 3 'Hello the World'
+python3 filterstring.py
+echo " ================ test ex07 ================= "
+cd ~/Desktop/ds_0/ex07
+python3 sos.py "sos" | cat -e
+python3 sos.py "Luis Miguel" | cat -e
+python3 sos.py 'h$llo'
+echo " ================ test ex08 ================= "
+cd ~/Desktop/ds_0/ex08
+cp ~/Documents/outer/42_python_piscine/ds_0_starting/ex08/tester.py .
+python3 ./tester.py
+echo " ================ test ex09 ================= "
+cd ~/Desktop/ds_0/ex09
+cp ~/Documents/outer/42_python_piscine/ds_0_starting/ex09/tester.py .
+pip uninstall -y ft_package
+python -m build 
+pip install ./dist/ft_package-0.0.1.tar.gz
+python3 ./tester.py

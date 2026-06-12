@@ -1,0 +1,17 @@
+#!/usr/bin/bash
+
+cp ex00/Hello.py ~/Desktop/ds_0/ex00
+cp ex01/format_ft_time.py ~/Desktop/ds_0/ex01
+cp ex02/find_ft_type.py ~/Desktop/ds_0/ex02
+cp ex03/NULL_not_found.py ~/Desktop/ds_0/ex03
+cp ex04/whatis.py ~/Desktop/ds_0/ex04
+cp ex05/building.py ~/Desktop/ds_0/ex05
+cp ex06/ft_filter.py ~/Desktop/ds_0/ex06
+cp ex06/filterstring.py ~/Desktop/ds_0/ex06
+cp ex07/sos.py ~/Desktop/ds_0/ex07
+cp ex08/Loading.py ~/Desktop/ds_0/ex08
+cp ex09/ft_package/*.py ~/Desktop/ds_0/ex09/ft_package
+cp ex09/*.txt ~/Desktop/ds_0/ex09
+cp ex09/*.toml ~/Desktop/ds_0/ex09
+cp ex09/README.md ~/Desktop/ds_0/ex09
+cp ex09/LICENSE ~/Desktop/ds_0/ex09
