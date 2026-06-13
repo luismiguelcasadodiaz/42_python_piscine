@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+mkdir ~/Desktop/ds_3/ex00
+mkdir ~/Desktop/ds_3/ex01
+mkdir ~/Desktop/ds_3/ex02
+mkdir ~/Desktop/ds_3/ex03
+mkdir ~/Desktop/ds_3/ex04
+cp ex00/S1E9.py ~/Desktop/ds_3/ex00
+cp ex01/S1E9.py ~/Desktop/ds_3/ex01
+cp ex01/S1E7.py ~/Desktop/ds_3/ex01
+cp ex02/S1E9.py ~/Desktop/ds_3/ex02
+cp ex02/S1E7.py ~/Desktop/ds_3/ex02
+cp ex02/DiamondTrap.py ~/Desktop/ds_3/ex02
+cp ex03/ft_calculator.py ~/Desktop/ds_3/ex03
+cp ex04/ft_calculator.py ~/Desktop/ds_3/ex04
