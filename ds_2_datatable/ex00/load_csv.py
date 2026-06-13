@@ -30,7 +30,7 @@ def path_test(path: str) -> str:
 
 
 def load(path: str) -> pd.DataFrame | None:
-    """Load a csv file, print its dimensions, and return a trimmed preview string.
+    """Load a csv file, print dimensions, and return a trimmed preview string.
 
     Resolves the file path via ``path_test``, reads the csv into a pandas
     DataFrame, and constructs a preview showing the first and last five
@@ -77,6 +77,7 @@ def load(path: str) -> pd.DataFrame | None:
         print("Could not parse this csv file")
     except Exception as e:
         print(f"Unexpected error {e}")
+
 
 def main():
     """Loas a file an partilly prints it"""

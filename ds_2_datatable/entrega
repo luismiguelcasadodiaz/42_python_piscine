@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+mkdir ~/Desktop/ds_2/ex00
+mkdir ~/Desktop/ds_2/ex01
+mkdir ~/Desktop/ds_2/ex02
+mkdir ~/Desktop/ds_2/ex03
+cp ex00/load_csv.py ~/Desktop/ds_2/ex00
+cp ex01/load_csv.py ~/Desktop/ds_2/ex01
+cp ex01/aff_life.py ~/Desktop/ds_2/ex01
+cp ex02/load_csv.py ~/Desktop/ds_2/ex02
+cp ex02/aff_pop.py ~/Desktop/ds_2/ex02
+cp ex03/load_csv.py ~/Desktop/ds_2/ex03
+cp ex03/projection_life.py ~/Desktop/ds_2/ex03

@@ -16,7 +16,7 @@ def main():
 
     See Also:
         load: Loads and returns a CSV dataset as a DataFrame.
-    """    
+    """
     income = load("income_per_person_gdppercapita_ppp_inflation_adjusted.csv")
     if income is None:
         return

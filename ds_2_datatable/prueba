@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+echo " ================ test ex00 ================= "
+cd ~/Desktop/ds_2/ex00
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex00/tester.py .
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex00/life_expectancy_years.csv .
+python3 ./tester.py
+echo " ================ test ex01 ================= "
+cd ~/Desktop/ds_2/ex01
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex01/life_expectancy_years.csv .
+python3 ./aff_life.py
+echo " ================ test ex02 ================= "
+cd ~/Desktop/ds_2/ex02
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex02/population_total.csv .
+python3 ./aff_pop.py
+echo " ================ test ex03 ================= "
+cd ~/Desktop/ds_2/ex03
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex03/life_expectancy_years.csv .
+cp ~/Documents/outer/42_python_piscine/ds_2_datatable/ex03/income_per_person_gdppercapita_ppp_inflation_adjusted.csv .
+python3 ./projection_life.py
+
