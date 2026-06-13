@@ -32,7 +32,7 @@ axes[1, 1].imshow(Image.fromarray(green))
 axes[1, 1].set_title("Figure VIII.4: Green")
 axes[2, 0].imshow(Image.fromarray(blue))
 axes[2, 0].set_title("Figure VIII.5: Blue")
-axes[2, 1].imshow(Image.fromarray(grey),cmap='gray')
+axes[2, 1].imshow(Image.fromarray(grey), cmap='gray')
 axes[2, 1].set_title("Figure VIII.6: Grey")
 
 

@@ -230,7 +230,7 @@ def rotate(image: np.ndarray, center: tuple, factor: float = 2.0):
 def main():
     """Loads animal.jpeg and rotate it"""
     arr = ft_load("animal.jpeg")
-    rotate(arr, (626, 460), 10)
+    rotate(arr, (626, 460), 1)
 
 
 if __name__ == "__main__":

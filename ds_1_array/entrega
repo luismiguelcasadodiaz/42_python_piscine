@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+mkdir ~/Desktop/ds_1/ex00
+mkdir ~/Desktop/ds_1/ex01
+mkdir ~/Desktop/ds_1/ex02
+mkdir ~/Desktop/ds_1/ex03
+mkdir ~/Desktop/ds_1/ex04
+mkdir ~/Desktop/ds_1/ex05
+cp ex00/give_bmi.py ~/Desktop/ds_1/ex00
+cp ex01/array2D.py ~/Desktop/ds_1/ex01
+cp ex02/load_image.py ~/Desktop/ds_1/ex02
+cp ex03/load_image.py ~/Desktop/ds_1/ex03
+cp ex03/zoom.py ~/Desktop/ds_1/ex03
+cp ex04/load_image.py ~/Desktop/ds_1/ex04
+cp ex04/rotate.py ~/Desktop/ds_1/ex04
+cp ex05/load_image.py ~/Desktop/ds_1/ex05
+cp ex05/pimp_image.py ~/Desktop/ds_1/ex05

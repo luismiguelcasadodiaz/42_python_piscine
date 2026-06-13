@@ -27,7 +27,7 @@ def slice_me(family: list, start: int, end: int) -> list:
 
 
 def main():
-    """Test slice_me with valid and edge-case inputs."""  
+    """Test slice_me with valid and edge-case inputs."""
     family = [[1.80, 78.4],
               [2.15, 102.7],
               [2.10, 98.5],

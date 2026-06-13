@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+echo " ================ test ex00 ================= "
+cd ~/Desktop/ds_1/ex00
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex00/tester.py .
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex00/test_bmi_calculator.py .
+python3 ./tester.py
+pytest -v test_bmi_calculator.py
+echo " ================ test ex01 ================= "
+cd ~/Desktop/ds_1/ex01
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex01/tester.py .
+python3 ./tester.py
+echo " ================ test ex02 ================= "
+cd ~/Desktop/ds_1/ex02
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex02/tester.py .
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex02/landscape.jpg .
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex02/landscape2.png .
+python3 ./tester.py
+echo " ================ test ex03 ================= "
+cd ~/Desktop/ds_1/ex03
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex03/animal.jpeg .
+python3 ./zoom.py
+echo " ================ test ex04 ================= "
+cd ~/Desktop/ds_1/ex04
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex04/animal.jpeg .
+python3 ./rotate.py
+echo " ================ test ex05 ================= "
+cd ~/Desktop/ds_1/ex05
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex05/landscape.jpg .
+cp ~/Documents/outer/42_python_piscine/ds_1_array/ex05/tester.py .
+python3 ./tester.py
