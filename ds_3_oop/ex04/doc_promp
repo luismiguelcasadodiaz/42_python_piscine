@@ -1,0 +1,62 @@
+The `@staticmethod` and `@classmethod` decorators both allow you to call methods 
+without instantiating a class, but they work differently:
+
+### `@staticmethod`
+Doesn't receive the class or instance — it's just a regular function namespaced
+inside the class.
+
+```python
+class MathUtils:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+# Call without instantiating
+result = MathUtils.add(3, 5)  # → 8
+```
+
+### `@classmethod`
+Receives the **class itself** (`cls`) as the first argument — 
+useful for factory methods or accessing class-level data.
+    
+```python
+class Dog:
+    species = "Canis lupus"
+
+    @classmethod
+    def get_species(cls):
+        return cls.species
+
+# Call without instantiating
+print(Dog.get_species())  # → Canis lupus
+```
+
+## Quick Comparison
+|Feature|@staticmethod|@classmethod
+|------------|-------------------|----------------|
+|Receives `self` (instance)?|❌|❌|
+|Receives `cls` (class)?|❌|✅|
+|Access instance attributes?|❌|❌|
+|Access class attributes?|❌|✅|
+|Call without instantiating?|✅|✅|
+
+## When to use which?
+
+Use `@staticmethod` when the method is a utility/helper that doesn't need class 
+or instance data.
+
+Use `@classmethod` when the method needs to access or modify class-level state, 
+or as an alternative constructor.
+
+```python
+class Date:
+    def __init__(self, year, month, day):
+        self.year, self.month, self.day = year, month, day
+
+    @classmethod
+    def from_string(cls, date_string):
+        year, month, day = map(int, date_string.split("-"))
+        return cls(year, month, day)  # Acts as a factory
+
+d = Date.from_string("2026-06-13")  # No manual instantiation needed
+```
