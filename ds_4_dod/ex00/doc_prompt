@@ -1,0 +1,146 @@
+# Variadic Functions in Python
+Variadic functions accept a variable number of arguments. 
+
+The two special syntax elements are `*args` and `**kwargs`.
+
+## `*args` — Positional arguments
+
+Collects any number of positional arguments into a **tuple**.
+
+```python
+def greet(*args):
+    for name in args:
+        print(f"Hello, {name}!")
+
+greet("Alice", "Bob", "Charlie")
+# Hello, Alice!
+# Hello, Bob!
+# Hello, Charlie!
+```
+
+## `**kwargs` — Keyword arguments
+
+Collects any number of keyword arguments into a dictionary.
+
+```python
+def display_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+display_info(name="Alice", age=30, city="Paris")
+# name: Alice
+# age: 30
+# city: Paris
+```
+
+Combined — like your ft_statistics
+```python
+
+from typing import Any
+
+def ft_statistics(*args: Any, **kwargs: Any) -> None:
+    print("Positional args:", args)      # tuple
+    print("Keyword   args:", kwargs)     # dict
+
+ft_statistics(1, 2, 3, op="mean", round=2)
+# Positional args: (1, 2, 3)
+# Keyword   args: {'op': 'mean', 'round': 2}
+```
+
+## Argument order rule
+
+When defining a function, parameters must follow this strict order:
+def f(normal, *args, keyword_only, **kwargs)
+         1       2         3            4
+
+
+|#|Type                  |Example    |
+|-|----------------------|-----------|
+|1|Regular positional    |x, y       |
+|2|Variadic positional   |*args      |
+|3|Keyword-only (after *)|mode="fast"|
+|4|Variadic keyword      |**kwargs   |
+
+## Unpacking when calling a function
+* and ** also work at the call site to unpack collections:
+```python
+def add(a, b, c):
+    return a + b + c
+
+nums = [1, 2, 3]
+add(*nums)          # same as add(1, 2, 3)
+
+opts = {"a": 1, "b": 2, "c": 3}
+add(**opts)         # same as add(a=1, b=2, c=3)
+```
+
+
+# median
+
+*args are in a tuple.
+Tuples are immutable in Python, so you can't sort them in place.
+
+But you don't need to convert to a list — 
+
+sorted() works directly on a tuple and returns a new list:
+sorted() accepts any iterable (tuple, list, set…) and always returns a new list
+                               
+THe median is the central value of a distribution
+
+# Typing module
+The typing module provides tools for type hints in Python. 
+
+## Basic Types
+For simple cases you just use Python's built-in types directly:
+```python
+x: int = 5
+name: str = "hello"
+flag: bool = True
+### typing module — most common
+```python
+from typing import Any, Union, Optional, List, Dict, Tuple, Callable
+```
+|Type           |Meaning                               |
+|---------------|--------------------------------------|
+|Any            |any type, disables type checking      |
+|Union[int, str]|int or str                            |
+|Optional[int]  |int or None (same as Union[int, None])|
+|List[int]      |list of ints                          |
+|Dict[str, int] |dict with str keys and int values     |
+|Tuple[int, str]|tuple with an int and a str           |
+|Callable       |a function                            |
+
+## Modern syntax (Python 3.10+)
+You don't need to import as much anymore:
+```python
+# Union
+def foo(x: int | str): ...
+
+# Optional
+def foo(x: int | None): ...
+
+# List, Dict, Tuple — use built-ins directly
+def foo(x: list[int]): ...
+def foo(x: dict[str, int]): ...
+def foo(x: tuple[int, str]): ...
+```
+
+Other useful ones
+
+```python
+from typing import Literal, TypeVar, Generic, Protocol
+
+# Literal — only specific values allowed
+def direction(d: Literal["left", "right"]) -> None: ...
+
+# TypeVar — for generic functions
+T = TypeVar("T")
+def first(items: list[T]) -> T:
+    return items[0]
+```
+## Important note
+Type hints are not enforced at runtime — Python ignores them during execution. They are for:
+
++ Your editor (autocomplete, warnings)
++ Type checkers like mypy or pyright
++ Code readability
