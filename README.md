@@ -164,3 +164,36 @@ Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots +
 | S1E7.py | Sibling subclasses, `super().__init__()` extension, `__str__` vs `__repr__`, `eval(repr(obj))` convention, `@classmethod` factory method | [Findings.md](ds_3_oop/ex01/Findings.md) |
 | DiamondTrap.py | Multiple inheritance, diamond problem, MRO, C3 linearization, `@property` with private backing store, cooperative `super()` chaining | [Findings.md](ds_3_oop/ex02/Findings.md) |
 | ft_calculator.py | Operator overloading, element-wise vectorised ops, side-effect dunder methods, selective error handling, mutable default argument pitfall | [Findings.md](ds_3_oop/ex03/Findings.md) |
+| ft_calculator.py | `@staticmethod`, class as namespace, vector-vector ops (dot product, add, subtract), `@staticmethod` vs `@classmethod` | [Findings.md](ds_3_oop/ex04/Findings.md) |
+
+
+## Data Oriented Design
+
++  ex00 — *args and **kwargs with dynamic dispatch
+  A single function accepts an unknown number of positional values and an unknown number of keyword arguments. The
+  keyword argument values (not names) determine which statistical computation to run. You learn how to write truly
+  variadic functions and how to use **kwargs as a dispatch table rather than a fixed parameter list. Error handling
+  is required for unknown keywords and missing data.
+
++  ex01 — Closures and functions as first-class objects
+  outer(x, function) returns an inner function that, each time it is called, applies function to the result of the
+  previous call — building up a chain. The state (how many times it has been called, the current accumulated value)
+  lives in the closure, not in a global variable (which is explicitly forbidden). You learn that functions can be
+  passed as arguments, returned as values, and can carry private state through their enclosing scope.
+
++  ex02 — Writing a decorator factory
+  callLimit(limit) returns a decorator, which returns a wrapper — three levels of nesting. The call counter lives in
+  the closure. You go from using decorators (ex03 and ex04 of ds_3) to writing one from scratch, including the
+  factory pattern where the decorator itself takes a configuration argument.
+
++  ex03 — Dataclasses
+  @dataclass auto-generates __init__, __repr__, and __eq__ from field declarations. You learn how to mark fields as
+  non-initializable (so passing them raises a TypeError), how to set computed defaults that run after construction,
+  and when @dataclass is the right tool instead of a hand-written class.
+
+  Running thread: functional programming patterns — closures, higher-order functions, and decorators — contrast
+  directly with the OOP approach of ds_3. The module asks: what if state and behaviour live in functions rather than
+  objects?
+
+| File | Description | Findings |
+|------|-------------|----------|

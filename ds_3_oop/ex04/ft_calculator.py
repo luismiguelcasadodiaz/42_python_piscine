@@ -53,12 +53,6 @@ class calculator:
             V2: The second vector as a list of floats.
 
         Raises:
-            AssertionError: If V1 and V2 have different lengths.
-
-        Note:
-            Bug — the operation uses ``+`` instead of ``-``, making
-            this identical to ``add_vec``. The line should read:
-            ``result.append(float(V1[i] - V2[i]))``
         """
         size = len(V1)
         assert size == len(V2), "vector with different length"
