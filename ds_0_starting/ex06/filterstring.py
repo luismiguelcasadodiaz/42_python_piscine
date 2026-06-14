@@ -16,7 +16,7 @@ def main():
     cleanstring = "".join(
         [c for c in sys.argv[1].encode().decode('unicode_escape')
          if goodchar(c)])
-    print(list(ft_filter(lambda x: len(x) >= int(sys.argv[2]),
+    print(list(ft_filter(lambda x: len(x) > int(sys.argv[2]),
                          cleanstring.split())))
 
 

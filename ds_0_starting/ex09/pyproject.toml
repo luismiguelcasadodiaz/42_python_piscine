@@ -13,9 +13,7 @@ license = "MIT"
 authors = [
     {name = "Luis Casado", email = "luis@example.com"}
 ]
-dependencies = [
-    "requests>=2.25",
-]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
