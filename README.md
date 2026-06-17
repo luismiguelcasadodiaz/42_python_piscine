@@ -197,3 +197,4 @@ Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots +
 
 | File | Description | Findings |
 |------|-------------|----------|
+| statistics.py | `*args`/`**kwargs`, dispatcher pattern, functions as first-class objects, statistical formulas from scratch, `sorted()` on tuples, module docstrings, `typing.Any` | [Findings.md](ds_4_dod/ex00/Findings.md) |

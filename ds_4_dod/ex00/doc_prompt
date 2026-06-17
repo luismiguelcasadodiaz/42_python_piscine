@@ -144,3 +144,114 @@ Type hints are not enforced at runtime — Python ignores them during execution.
 + Your editor (autocomplete, warnings)
 + Type checkers like mypy or pyright
 + Code readability
+
+
+# Module's docstring
+
+It's simply the first string literal at the top of the file, before any code. 
+
+You can access it in a few ways:
+```python
+# 1. Import the module and use __doc__
+import my_module
+print(my_module.__doc__)
+
+# 2. From within the module itself
+print(__doc__)
+
+# 3. Using the help() built-in
+import my_module
+help(my_module)
+```
+
+For example, if your file ft_statistics.py starts with:
+
+
+```python
+"""Descriptive statistics module.
+
+Provides functions for computing common statistical measures...
+"""
+```
+Then:
+```python
+import ft_statistics
+print(ft_statistics.__doc__)
+# Output: Descriptive statistics module.
+#
+# Provides functions for computing common statistical measures...
+```
+It works the same way as class and function docstrings — Python stores the 
+first unassigned string literal of any module, class, or function in its 
+__doc__ attribute. 
+
+Packages can have them too, by placing the docstring at the top of __init__.py.
+
+# Functions distpacher
+
+This is a dispatcher pattern — a way to map string names to functions and call 
+them dynamically.
+## Step 1 — The lookup table:
+```python
+dispatcher = {"mean": ft_mean,
+              "median": ft_median,
+              "quartile": ft_quartile,
+              "std": ft_std,
+              "var": ft_variance}
+```
+
+This dictionary stores function references (not calls — no parentheses). The 
+keys are strings, the values are the actual functions. Think of it as a menu: 
+**if someone asks for `mean`, serve them `ft_mean`**
+
+## Step 3 — Loop through the requests:
+```python
+for k, v in kwargs.items():
+```
+
+When you call `ft_statistics(1, 42, 360, toto="mean", tutu="median")`, the kwargs
+dictionary is `{"toto": "mean", "tutu": "median"}`. So k is the key (ignored — 
+`"toto"`, `"tutu"`) and v is the value (`"mean"`, `"median"`).
+
+## Step 4 — Dispatch:
+```python
+if v in dispatcher:
+    print(f"{v} : {dispatcher[v](sorted_values, n)}")
+```
+
+This is the core trick. `dispatcher[v]` retrieves the function, and 
+`(sorted_values, n)` calls it immediately. For example, when `v = "mean"`:
+
+```python
+dispatcher["mean"](sorted_values, n)
+#    ↓
+ft_mean(sorted_values, n)
+```
+It's equivalent to writing a long if/elif chain, but much cleaner:
+
+```python
+# The dispatcher replaces all of this:
+if v == "mean":
+    print(f"mean : {ft_mean(sorted_values, n)}")
+elif v == "median":
+    print(f"median : {ft_median(sorted_values, n)}")
+elif v == "quartile":
+    print(f"quartile : {ft_quartile(sorted_values, n)}")
+# ... and so on
+```
+
+Step 5 — Handle unknown operations:
+```python
+else:
+    print("ERROR")
+```
+
+
+If someone passes `toto="heheh"`, `"heheh"` isn't a key in the dispatcher, so 
+it prints `"ERROR"`.
+
+The key insight is that in Python, functions are first-class objects — you can 
+store them in variables, put them in dictionaries, and call them later. 
+
+The dispatcher pattern leverages this to turn string inputs into function calls
+cleanly.
