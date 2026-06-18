@@ -1,0 +1,74 @@
+  outer(x, function) returns inner — a function object, not a result. 
+
+  Each time inner() is called, it applies function to the value accumulated 
+  from the previous call, and that accumulated value persists between calls 
+  without any global variable.
+
+  The three things you learn together:
+
+  + 1. **Closures** — inner captures variables from outer's scope (x, function,
+  count) and keeps them alive after outer has returned. 
+  The state lives in the closure, not in the module's global scope (which the 
+  subject explicitly forbids).
+
+  + 2. **Returning a function** — outer returns inner as an object (return 
+  inner, no parentheses). The caller stores it and invokes it later. This is 
+  the distinction between returning a function and calling a function.
+
+  + 3.** Mutable closure state** — the accumulated value changes on every call
+  to inner. Managing state that evolves across calls, scoped privately to one 
+  counter instance, is the core challenge. Two separate calls to outer produce 
+  two independent counters with no shared state.
+
+# Closures
+
+A closure in Python is a function that **remembers values** from its enclosing
+scope even after that scope has finished executing. It happens when you nest a
+function inside another function, and the inner function references a variable 
+from the outer one.
+
+Here's a simple example:
+
+```python
+def make_multiplier(factor):
+    def multiply(x):
+        return x * factor
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+
+print(double(5))   # 10
+print(triple(5))   # 15
+```
+
+After `make_multiplier` returns, its local variable `factor` would normally be 
+gone. But because multiply references it, Python keeps it alive — that's the 
+closure. The inner function "closes over" the variable.
+
+A few things worth knowing:
+
+By default, the inner function **can only read** the enclosed variable. If you 
+want to reassign it, you need the `nonlocal` keyword:
+
+```python
+
+def counter():
+    count = 0
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
+
+c = counter()
+print(c())  # 1
+print(c())  # 2
+```
+
+You can inspect what a closure captured using the __closure__ attribute — each
+captured variable is stored in a cell object there.
+
+Closures are useful for things like factories , decorators, callbacks, and 
+anywhere you want to carry some state without reaching for a full class.
+
