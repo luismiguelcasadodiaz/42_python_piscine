@@ -1,0 +1,96 @@
+The core aim is writing a decorator factory 
+
+It breaks down into several layered concepts:
+
++ The three-level nesting structure
+  callLimit(limit) is not itself a decorator — it is a function that returns a 
+  decorator (callLimiter), which itself  returns the wrapper (limit_function). 
+
+  You have written closures (ex01) and used decorators (@staticmethod,
+  @classmethod, @property). 
+
+  Here you write one from scratch for the first time, and with the extra layer 
+  needed when the decorator takes a configuration argument.
+
++ The wrapper pattern
+  limit_function(*args, **kwargs) is a function that sits in front of the 
+  original. 
+
+  It decides whether to call the  original or block it. 
+
+  Using *args/**kwargs makes the wrapper transparent to any function signature 
+  — the caller does not know or care that a wrapper is involved.
+
++ Closure-based call counter
+  count lives in the closure between callLimiter and limit_function. 
+
+  Each decorated function gets its own independent counter — f and g do not 
+  share state. 
+
+  This is the same principle as ex01 but applied to a practical problem.
+
++ The @ syntax as shorthand
+  @callLimit(3) before def f() is exactly equivalent to f = callLimit(3)(f) 
+  — two function calls in sequence.
+  
+  Understanding this unwraps any decorator factory mentally.
+
+A decorator factory is a function that returns a decorator. 
+
+It's what you use when you want your decorator to accept arguments.
+
++ Regular decorator — takes a function directly:
+
+´´´python
+def my_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("before")
+        return func(*args, **kwargs)
+    return wrapper
+
+@my_decorator
+def say_hello():
+    print("hello")
+```
+
++ Decorator factory — takes arguments, then returns a decorator:
+```python
+def repeat(n):              # factory: takes the argument
+    def decorator(func):    # the actual decorator
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@repeat(3)
+def say_hello():
+    print("hello")
+
+say_hello()  # prints "hello" three times
+
+```
+
+So there are three nested layers: 
++ the factory (`repeat`) receives the config (`n`), 
++ returns a decorator, 
++ which receives the function, which returns the wrapper.
+
+
+The @repeat(3) syntax works because Python first calls repeat(3), which returns
+a decorator, and then that decorator is applied to say_hello — equivalent to 
+say_hello = repeat(3)(say_hello).
+
+Common real-world examples include @app.route("/path") in Flask, @pytest.mark.parametrize(...), and @functools.lru_cache(maxsize=128).
+
+
+
+One thing to note: 
+the `nonlocal count` in `callLimiter` (outside `limit_function`) isn't necessary — 
+it's only needed inside `limit_function` **where count is actually modified**. 
+It won't cause errors, but it's redundant at that level. 
+
+Also, the counter is shared across all functions decorated with the same 
+`@callLimit(n)` call. 
+If you decorate two different functions separately, each gets its own counter, 
+which is the expected behavior.
