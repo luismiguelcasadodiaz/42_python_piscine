@@ -136,6 +136,8 @@ np.allclose([20.000000000001], [20.0])   # True
 
 Default tolerances: `rtol=1e-5` (relative), `atol=1e-8` (absolute).
 
+# alternative repository to install a package
+python -m pip install numpy --extra-index-url https://pypi.org/simple
 
 
 [return](../../README.md)
