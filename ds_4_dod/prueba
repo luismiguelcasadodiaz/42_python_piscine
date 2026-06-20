@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+echo " ================ test ex00 ================= "
+cd ~/Desktop/ds_4/ex00
+cp ~/Documents/outer/42_python_piscine/ds_4_dod/ex00/tester.py .
+python3 ./tester.py
+echo " ================ test ex01 ================= "
+cd ~/Desktop/ds_4/ex01
+cp ~/Documents/outer/42_python_piscine/ds_4_dod/ex01/tester.py .
+python3 ./tester.py
+echo " ================ test ex02 ================= "
+cd ~/Desktop/ds_4/ex02
+cp ~/Documents/outer/42_python_piscine/ds_4_dod/ex02/tester.py .
+python3 ./tester.py
+echo " ================ test ex03 ================= "
+cd ~/Desktop/ds_4/ex03
+cp ~/Documents/outer/42_python_piscine/ds_4_dod/ex03/tester.py .
+python3 ./tester.py
+

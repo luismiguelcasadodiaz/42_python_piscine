@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+mkdir ~/Desktop/ds_4/ex00
+mkdir ~/Desktop/ds_4/ex01
+mkdir ~/Desktop/ds_4/ex02
+mkdir ~/Desktop/ds_4/ex03
+cp ex00/statistics.py ~/Desktop/ds_4/ex00
+cp ex01/in_out.py ~/Desktop/ds_4/ex01
+cp ex02/callLimit.py ~/Desktop/ds_4/ex02
+cp ex03/new_student.py ~/Desktop/ds_4/ex03
