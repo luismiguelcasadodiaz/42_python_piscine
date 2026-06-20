@@ -66,13 +66,9 @@ never need to declare "this object implements interface X" — you just call the
 method, and if it works, it works.
 
 This contrasts with statically-typed languages like Java or C#, where you would
-need to explicitly declare that a class implements an interface before passing an
-instance to a function that expects one.
+need to explicitly declare that a class implements an interface before passing an instance to a function that expects one.
 
-The tradeoff is **flexibility versus safety**. Duck typing makes code concise and
-adaptable — you can pass any compatible object without boilerplate — but errors
-only surface when the code actually runs, which can make bugs harder to catch
-early. That is exactly the gap that the `abc` module fills: it lets you
+The tradeoff is **flexibility versus safety**. Duck typing makes code concise and adaptable — you can pass any compatible object without boilerplate — but errors only surface when the code actually runs, which can make bugs harder to catch early. That is exactly the gap that the `abc` module fills: it lets you
 optionally add interface-like contracts when the flexibility becomes a liability.
 
 ### How `ABC` enforces contracts at runtime

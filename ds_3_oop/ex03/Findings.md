@@ -57,8 +57,8 @@ def __truediv__(self, object) -> None:
 `def __init__(self, data: list = None)` — using `None` as the default and
 creating the list inside the body guards against a classic Python trap: if you
 write `def __init__(self, data=[])`, that single list object is shared across
-**all** instances that don't pass an argument, because default values are
-evaluated once at function definition time, not at each call.
+**all** instances that don't pass an argument, because **default values are
+evaluated ONCE at function definition time**, not at each call.
 
 ---
 
