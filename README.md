@@ -200,3 +200,4 @@ Pandas I/O + wide-format data + row filtering + transpose + line/scatter plots +
 | statistics.py | `*args`/`**kwargs`, dispatcher pattern, functions as first-class objects, statistical formulas from scratch, `sorted()` on tuples, module docstrings, `typing.Any` | [Findings.md](ds_4_dod/ex00/Findings.md) |
 | in_out.py | Closures, `nonlocal`, returning a function vs. calling it, mutable closure state, independent instances, state without global variables | [Findings.md](ds_4_dod/ex01/Findings.md) |
 | callLimit.py | Decorator factory, three-level nesting, wrapper pattern, `*args`/`**kwds` transparency, closure-based counter, `@` syntax as shorthand | [Findings.md](ds_4_dod/ex02/Findings.md) |
+| new_student.py | `@dataclass`, `field(init=False)`, `__post_init__`, class vs instance attribute, `__dict__` order, `default` vs `default_factory` | [Findings.md](ds_4_dod/ex03/Findings.md) |

@@ -12,8 +12,7 @@ Four concepts to learn in this exercise:
   and how this works is a core part of the exercise.
 
 +  3. __post_init__ — derived fields computed after construction
-  The auto-generated __init__ sets name, surname, and active. Then __post_init__ runs automatically and computes
-  login (derived from name and surname) and id (a random string). You learn that @dataclass does not prevent
+  The auto-generated __init__ sets name and surname. Then __post_init__ runs automatically and computes login (derived from name and surname) and id (a random string). You learn that @dataclass does not prevent
   post-construction logic — it just moves it to a dedicated hook.
 
 +  4. When @dataclass is the right tool
@@ -148,6 +147,8 @@ class User:
 ```
 The field still exists on the instance, just isn't a constructor parameter (you'd typically set it in __post_init__ instead).
 
+Once you use a default, the following attributes must have one default. The same that in a regular function signature.
+
 ## Quick mental model
 
 |You want to...|Use|
@@ -159,3 +160,93 @@ The field still exists on the instance, just isn't a constructor parameter (you'
 
 
 A good rule of thumb: reach for `field()` whenever a plain `=` default would either error out (mutable types) or you need finer control over a specific attribute's behavior.
+
+## what init=False does
+
+Let's trace exactly what init=False does.
+## The key fact: init=False + plain default= skips instance assignment entirely
+When a field has `init=False` and a literal `default=value` (not `default_factory`), dataclass does not generate any **assignment line** for it inside `__init__`. Instead, it leaves the default sitting as a **class attribute** (`Student.active = True`) and relies on normal Python attribute lookup: if an **instance** doesn't have `active` in its own `__dict__`, lookup falls through to the class and finds it there.
+
+So right after construction, `active` is **not actually in** `student.__dict__` **at all** — it's only visible by fallback to the class. It only becomes a **real per-instance** entry once something explicitly does `self.active = ...` somewhere.
+
+Compare that to `login/id` in your `__post_init__`, which are explicitly assigned (`self.login = ...`, `self.id = ...`) — those create real __dict__ entries the moment that code runs.
+
+## Walking through output
+```python
+active: bool = field(init=False, default=True)   # no assignment generated in __init__
+login: str = field(init=False, default="")       # same — but YOU assign it in __post_init__
+id: str = field(init=False, default="")           # same — also assigned in __post_init__
+```
+Construction sequence for Student(name="Edward", surname="agle"):
+
+1.- `self.name = "Edward"` → `__dict__` = `{name}`
+2.- `self.surname = "agle"` → `__dict__` = `{name, surname}`
+3.- `active` — **skipped**, no line generated, nothing added to `__dict__`
+4.- `login`, `id` — **skipped** too, for the same reason (also `init=False` with plain default)
+5.- `__post_init__()` runs:
+
+    + `self.login = "Eagle"` → `__dict__` = `{name, surname, login}`
+    + `self.id = "..."` → `__dict__` = `{name, surname, login, id}`
+
+
+
+At this point `active'  still isn't in `__dict__` — `print(student)` reads `self.active`, which falls back to the **class attribute** True, giving you `active=True` in the repr even though it's absent from the instance dict.
+
+Then:
+```python
+student.active = False
+```
+This is the first real write to `active` on this instance — so it's inserted **last**:
+```python
+{'name': ..., 'surname': ..., 'login': ..., 'id': ..., 'active': False}
+```
+
+Exactly matching what you observed, every single time, regardless of the @property experiments.
+
+## Key takeaway
+`__dict__` order = order of **first actual assignment**, not field-declaration order. `init=False` with a plain `default=` actively delays (or entirely skips) that first assignment, decoupling instance-dict order from class-body order.
+
+## How to make it eager again
+If you want an `init=False` field to actually get a **real instance entry immediately**, at its declared position, use `default_factory` instead of `default` — even for a constant:
+```python
+active: bool = field(init=False, default_factory=lambda: True)
+```
+For `default_factory`, dataclass always generates an assignment line in `__init__`, regardless of `init=True/False` — so this field would show up in `__dict__` right after `surname`, in its declared position, just like a normal field would.
+
+
+###     active: bool = field(init=False, default=True)
+
+Defines a class attribute
+
+```bash
+-------------Before post init......................
+Student(name='Edward', surname='agle', active=True, login='', id='')
+{'name': 'Edward', 'surname': 'agle'}
+-------------after post init......................
+Student(name='Edward', surname='agle', active=True, login='Eagle', id='jqicgmesoeiyxag')
+{'name': 'Edward', 'surname': 'agle', 'login': 'Eagle', 'id': 'jqicgmesoeiyxag'}
+-------------Before change active......................
+Student(name='Edward', surname='agle', active=True, login='Eagle', id='jqicgmesoeiyxag')
+{'name': 'Edward', 'surname': 'agle', 'login': 'Eagle', 'id': 'jqicgmesoeiyxag'}
+-------------after change active......................
+Student(name='Edward', surname='agle', active=False, login='Eagle', id='jqicgmesoeiyxag')
+{'name': 'Edward', 'surname': 'agle', 'login': 'Eagle', 'id': 'jqicgmesoeiyxag', 'active': False}
+```
+### active: bool = field(default=True)
+
+defines an instance attribute
+
+```bash
+-------------Before post init......................
+Student(name='Edward', surname='agle', active=True, login='', id='')
+{'name': 'Edward', 'surname': 'agle', 'active': True}
+-------------after post init......................
+Student(name='Edward', surname='agle', active=True, login='Eagle', id='oslvgoayeypffhx')
+{'name': 'Edward', 'surname': 'agle', 'active': True, 'login': 'Eagle', 'id': 'oslvgoayeypffhx'}
+-------------Before change active......................
+Student(name='Edward', surname='agle', active=True, login='Eagle', id='oslvgoayeypffhx')
+{'name': 'Edward', 'surname': 'agle', 'active': True, 'login': 'Eagle', 'id': 'oslvgoayeypffhx'}
+-------------after change active......................
+Student(name='Edward', surname='agle', active=False, login='Eagle', id='oslvgoayeypffhx')
+{'name': 'Edward', 'surname': 'agle', 'active': False, 'login': 'Eagle', 'id': 'oslvgoayeypffhx'}
+```
