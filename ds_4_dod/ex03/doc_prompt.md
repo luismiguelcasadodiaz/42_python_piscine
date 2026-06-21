@@ -59,7 +59,40 @@ print(p)        # Point(x=3, y=4)
 print(p == Point(3, 4))   # True
 ```
 
-Same behavior, way less code.
+## `@dataclass(repr=False)`
+Two ways, depending on the scope you want:
+1. Disable __repr__ for the whole class
+Pass repr=False to the decorator itself:
+```python
+from dataclasses import dataclass
+
+@dataclass(repr=False)
+class Point:
+    x: int
+    y: int
+
+p = Point(3, 4)
+print(p)   # <__main__.Point object at 0x7f8a1c0b3d90>
+```
+
+Now Python falls back to the default object.__repr__.
+2. Write your own __repr__
+If you just define __repr__ yourself in the class body, dataclass will not overwrite it — dataclass only adds a method if one doesn't already exist on the class:
+```python
+@dataclass
+class Point:
+    x: int
+    y: int
+
+    def __repr__(self):
+        return f"<Point at ({self.x}, {self.y})>"
+
+p = Point(3, 4)
+print(p)   # <Point at (3, 4)>
+```
+This is the more common pattern — you usually don't want the default object repr (which is just a memory address and not very useful), you want a custom one.
+
+
 # `field()`
 `field()` lets you customize how an individual attribute behaves — things a plain annotation can't express. The most common case: **mutable default values**.
 
@@ -105,6 +138,15 @@ class User:
 + repr=False — exclude the field from the auto-generated __repr__ (useful for secrets)
 + compare=False — exclude the field from __eq__/ordering
 + init=False — don't include it as an __init__ parameter
+
+Field-level, exclude just one field from the generated __init__:
+```python
+@dataclass
+class User:
+    name: str
+    id: int = field(init=False, default=0)
+```
+The field still exists on the instance, just isn't a constructor parameter (you'd typically set it in __post_init__ instead).
 
 ## Quick mental model
 

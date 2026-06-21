@@ -9,5 +9,5 @@ def generate_id() -> str:
 
 @dataclass
 class Student:
-    # your code here
+    # mvyour code here
     pass
