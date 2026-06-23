@@ -11,6 +11,28 @@ def g():
     print("g()")
 
 
-for i in range(3):
+for i in range(4):
     f()
     g()
+
+
+decor = callLimit(4)
+
+@decor
+def p():
+    print("p()")
+
+@decor
+def s():
+    print("s()")
+
+p()
+p()
+p()
+p()
+p()
+s()
+s()
+s()
+s()
+s()

@@ -29,8 +29,8 @@ def callLimit(limit: int):
         >>> greet("Dave")    # Call 4 — blocked
         Error: <function greet at 0x...> call too many times
     """
-    count = 0
-
+    
+    count = limit
     def callLimiter(function):
         """Wrap a function with call-count enforcement.
 
@@ -41,6 +41,7 @@ def callLimit(limit: int):
             The wrapped function (limit_function) that enforces
             the call limit.
         """
+
         def limit_function(*args: Any, **kwds: Any):
             """Execute original function if calls remain, else print an error.
 
@@ -55,9 +56,9 @@ def callLimit(limit: int):
                     original function.
             """
             nonlocal count
-            if count != limit:
+            if count:
                 function(*args, **kwds)
-                count += 1
+                count -= 1
             else:
                 print(f"Error: {function} call too many times")
 
